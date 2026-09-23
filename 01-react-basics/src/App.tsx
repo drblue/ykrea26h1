@@ -4,6 +4,7 @@ import "./App.css";
 function App() {
 	// let counter = 0;  // stateless
 	const [counter, setCounter] = useState(0);
+	const [msg, setMsg] = useState("Hi mom!");
 
 	const handleBtnClick = () => {
 		console.log("Stop it, that tickles! 😂");
@@ -25,6 +26,12 @@ function App() {
 			<p>Counter: {counter}</p>
 
 			<button onClick={handleBtnClick}>Click me!</button>
+
+			<hr />
+
+			<p>{msg}</p>
+
+			<button onClick={() => setMsg("Hi dad!")}>Hi dad?</button>
 		</>
 	);
 }
