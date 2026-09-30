@@ -50,6 +50,12 @@ function App() {
 		);
 	}
 
+	const handleDelete = (id: number) => {
+		setPosts((prevPosts) =>
+			prevPosts.filter(post => post.id !== id)
+		);
+	}
+
 	console.log("App is rendering...");
 
 	return (
@@ -125,7 +131,10 @@ function App() {
 							onClick={() => handleAddLike(post.id)}
 						>❤️</button>
 
-						<button className="ms-1 btn btn-sm btn-danger">💣</button>
+						<button
+							className="ms-1 btn btn-sm btn-danger"
+							onClick={() => handleDelete(post.id)}
+						>💣</button>
 					</li>
 				)}
 			</ul>
