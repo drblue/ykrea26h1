@@ -122,31 +122,27 @@ function App() {
 
 			<h2>Posts</h2>
 
-			{posts.length > 0 ? (
-				<>
-					<ul className="postlist">
-						{posts.map(post =>
-							<li key={post.id}>
-								{post.title} ({post.likes} likes)
+			{posts.length > 0 && (
+				<ul className="postlist">
+					{posts.map(post =>
+						<li key={post.id}>
+							{post.title} ({post.likes} likes)
 
-								<button
-									className="ms-1 btn btn-sm btn-success"
-									onClick={() => handleAddLike(post.id)}
-								>❤️</button>
+							<button
+								className="ms-1 btn btn-sm btn-success"
+								onClick={() => handleAddLike(post.id)}
+							>❤️</button>
 
-								<button
-									className="ms-1 btn btn-sm btn-danger"
-									onClick={() => handleDelete(post.id)}
-								>💣</button>
-							</li>
-						)}
-					</ul>
-
-					<PostCounter count={posts.length} />
-				</>
-			) : (
-				<p>NO POSTS 4 U!!!!!</p>
+							<button
+								className="ms-1 btn btn-sm btn-danger"
+								onClick={() => handleDelete(post.id)}
+							>💣</button>
+						</li>
+					)}
+				</ul>
 			)}
+
+			<PostCounter count={posts.length} />
 		</div>
 	);
 }
