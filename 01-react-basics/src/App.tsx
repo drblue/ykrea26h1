@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Counter from "./components/Counter";
 import "./assets/scss/App.scss";
 
 interface Todo {
@@ -9,7 +10,6 @@ interface Todo {
 
 function App() {
 	// let counter = 0;  // stateless
-	const [counter, setCounter] = useState(0);
 	const [msg, setMsg] = useState("Hi mom!");
 	const [posts, setPosts] = useState<Todo[]>([
 		{ id: 1, title: "React Rocks 🎸!", likes: 1337 },
@@ -17,19 +17,6 @@ function App() {
 		{ id: 3, title: "Got state? 🚓", likes: 3 },
 	]);
 	const [salary, setSalary] = useState(10);
-
-	const handleBtnClick = () => {
-		console.log("Counter before increase:", counter);
-
-		// increase counter
-		setCounter( (prevValue) => prevValue + 1 );  // prevValue = 0, return 1
-
-		console.log("Counter between updates:", counter);
-
-		setCounter( (prevValue) => prevValue + 1 );  // prevValue = 1, return 2
-
-		console.log("Counter after increase:", counter);
-	}
 
 	const handleChangeSalary = (amount: number) => {
 		if (salary + amount < 5) {
@@ -47,9 +34,9 @@ function App() {
 		<div className="container py-2">
 			<h1>01-react-basics</h1>
 
-			<p>Counter: {counter}</p>
+			<Counter />
 
-			<button className="btn btn-primary" onClick={handleBtnClick}>Click me!</button>
+			<Counter />
 
 			<hr />
 
