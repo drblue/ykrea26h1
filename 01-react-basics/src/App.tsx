@@ -16,6 +16,7 @@ function App() {
 		{ id: 2, title: "JSX Rocks Even Moar 🤘🏻!", likes: 42 },
 		{ id: 3, title: "Got state? 🚓", likes: 3 },
 	]);
+	const [salary, setSalary] = useState(10);
 
 	const handleBtnClick = () => {
 		console.log("Stop it, that tickles! 😂");
@@ -26,6 +27,10 @@ function App() {
 		setCounter(counter + 1);
 
 		console.log("Counter after increase:", counter);
+	}
+
+	const handleChangeSalary = (amount: number) => {
+		setSalary(salary + amount);
 	}
 
 	console.log("App is rendering...");
@@ -48,17 +53,19 @@ function App() {
 
 			<h2>Salary</h2>
 
-			<p>Salary per hour: SALARY &euro;</p>
+			<p>Salary per hour: {salary} &euro;</p>
 
 			<div className="buttons">
 				<div className="mb-1">
 					<button
 						className="btn btn-primary btn-lg"
+						onClick={() => handleChangeSalary(1)}
 					>
 						Raise 1 &euro; 🤑
 					</button>
 					<button
 						className="btn btn-warning btn-lg"
+						onClick={() => handleChangeSalary(-1)}
 					>
 						Decrease 1 &euro; 😢
 					</button>
@@ -67,11 +74,13 @@ function App() {
 				<div className="mb-1">
 					<button
 						className="btn btn-primary btn-lg"
+						onClick={() => handleChangeSalary(5)}
 					>
 						Raise 5 &euro; 🤑🤑🤑
 					</button>
 					<button
 						className="btn btn-warning btn-lg"
+						onClick={() => handleChangeSalary(-5)}
 					>
 						Decrease 5 &euro; 😢😢😢
 					</button>
