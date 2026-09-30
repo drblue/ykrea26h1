@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Counter from "./components/Counter";
+import PostCounter from "./components/PostCounter";
 import "./assets/scss/App.scss";
 
 interface Todo {
@@ -93,11 +94,17 @@ function App() {
 			<hr />
 
 			<h2>Posts</h2>
-			<ul>
+			<ul className="postlist">
 				{posts.map(post =>
-					<li key={post.id}>{post.title} ({post.likes} likes)</li>
+					<li key={post.id}>
+						{post.title} ({post.likes} likes)
+						<button className="ms-1 btn btn-sm btn-success">❤️</button>
+						<button className="ms-1 btn btn-sm btn-danger">💣</button>
+					</li>
 				)}
 			</ul>
+
+			<PostCounter count={posts.length} />
 		</div>
 	);
 }
