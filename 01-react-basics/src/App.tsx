@@ -76,6 +76,7 @@ function App() {
 						Raise 1 &euro; 🤑
 					</button>
 					<button
+						disabled={salary === 5}
 						className="btn btn-warning btn-lg"
 						onClick={() => handleChangeSalary(-1)}
 					>
@@ -91,6 +92,7 @@ function App() {
 						Raise 5 &euro; 🤑🤑🤑
 					</button>
 					<button
+						disabled={salary - 5 < 5}
 						className="btn btn-warning btn-lg"
 						onClick={() => handleChangeSalary(-5)}
 					>
