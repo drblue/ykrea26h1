@@ -19,12 +19,14 @@ function App() {
 	const [salary, setSalary] = useState(10);
 
 	const handleBtnClick = () => {
-		console.log("Stop it, that tickles! 😂");
-
 		console.log("Counter before increase:", counter);
 
 		// increase counter
-		setCounter(counter + 1);
+		setCounter( (prevValue) => prevValue + 1 );  // prevValue = 0, return 1
+
+		console.log("Counter between updates:", counter);
+
+		setCounter( (prevValue) => prevValue + 1 );  // prevValue = 1, return 2
 
 		console.log("Counter after increase:", counter);
 	}
