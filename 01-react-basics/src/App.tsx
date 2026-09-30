@@ -50,6 +50,22 @@ function App() {
 		);
 	}
 
+	const handleAddPost = () => {
+		const title = prompt("What do you want to tell the world?");
+		if (!title) {
+			alert("mkai...");
+			return;
+		}
+
+		const newPost: Post = {
+			id: Math.max(0, ...posts.map(post => post.id)) + 1,
+			title,
+			likes: 0,
+		}
+
+		setPosts((prevPosts) => [...prevPosts, newPost]);
+	}
+
 	const handleDelete = (id: number) => {
 		setPosts((prevPosts) =>
 			prevPosts.filter(post => post.id !== id)
@@ -121,6 +137,11 @@ function App() {
 			<hr />
 
 			<h2>Posts</h2>
+
+			<button
+				className="btn btn-primary mb-3"
+				onClick={handleAddPost}
+			>Add post</button>
 
 			{posts.length > 0 && (
 				<ul className="postlist">
