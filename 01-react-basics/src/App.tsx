@@ -3,7 +3,7 @@ import Counter from "./components/Counter";
 import PostCounter from "./components/PostCounter";
 import "./assets/scss/App.scss";
 
-interface Todo {
+interface Post {
 	id: number;
 	title: string;
 	likes: number;
@@ -12,7 +12,7 @@ interface Todo {
 function App() {
 	// let counter = 0;  // stateless
 	const [msg, setMsg] = useState("Hi mom!");
-	const [posts, setPosts] = useState<Todo[]>([
+	const [posts, setPosts] = useState<Post[]>([
 		{ id: 1, title: "React Rocks 🎸!", likes: 1337 },
 		{ id: 2, title: "JSX Rocks Even Moar 🤘🏻!", likes: 42 },
 		{ id: 3, title: "Got state? 🚓", likes: 3 },
@@ -27,6 +27,27 @@ function App() {
 
 		// Or just use Math.max(5, salary + amount) below
 		setSalary(salary + amount);
+	}
+
+	const handleAddLike = (id: number) => {
+		console.log(`Post ${id} deserves more <3!`);
+
+		/*
+		setPosts((prevPosts) => {
+			return prevPosts.map(post => {
+				return post.id === id
+					? { ...post, likes: post.likes + 1 }
+					: post;
+			})
+		});
+		*/
+		setPosts((prevPosts) =>
+			prevPosts.map(post =>
+				post.id === id
+					? { ...post, likes: post.likes + 1 }
+					: post
+			)
+		);
 	}
 
 	console.log("App is rendering...");
@@ -98,7 +119,12 @@ function App() {
 				{posts.map(post =>
 					<li key={post.id}>
 						{post.title} ({post.likes} likes)
-						<button className="ms-1 btn btn-sm btn-success">❤️</button>
+
+						<button
+							className="ms-1 btn btn-sm btn-success"
+							onClick={() => handleAddLike(post.id)}
+						>❤️</button>
+
 						<button className="ms-1 btn btn-sm btn-danger">💣</button>
 					</li>
 				)}
