@@ -1,13 +1,9 @@
 import { useState } from "react";
 import Counter from "./components/Counter";
 import PostCounter from "./components/PostCounter";
+import type { Post } from "./types/Post";
 import "./assets/scss/App.scss";
-
-interface Post {
-	id: number;
-	title: string;
-	likes: number;
-}
+import AddPostForm from "./components/AddPostForm";
 
 function App() {
 	// let counter = 0;  // stateless
@@ -18,7 +14,6 @@ function App() {
 		{ id: 3, title: "Got state? 🚓", likes: 3 },
 	]);
 	const [salary, setSalary] = useState(10);
-	const [inputPostTitle, setInputPostTitle] = useState("");
 
 	const handleChangeSalary = (amount: number) => {
 		if (salary + amount < 5) {
@@ -46,21 +41,15 @@ function App() {
 		);
 	}
 
-	const handleFormSubmit = (e: React.SubmitEvent) => {
-		// Stop form from being submitted (and causing a page reload)
-		e.preventDefault();
-
+	const handleAddPost = (title: string) => {
 		// Create a new post object
 		const newPost: Post = {
 			id: Math.max(0, ...posts.map(post => post.id)) + 1,
-			title: inputPostTitle,
+			title,
 			likes: 0,
 		}
 
 		setPosts((prevPosts) => [...prevPosts, newPost]);
-
-		// Clear input field
-		setInputPostTitle("");
 	}
 
 	console.log("App is rendering...");
@@ -129,24 +118,7 @@ function App() {
 
 			<h2>Posts</h2>
 
-			<form onSubmit={handleFormSubmit}>
-				<div className="input-group mb-3">
-					<input
-						aria-label="What do you want to tell the world?"
-						className="form-control"
-						onChange={e => setInputPostTitle(e.target.value)}
-						placeholder="I love react!"
-						type="text"
-						value={inputPostTitle}
-						required
-					/>
-
-					<button
-						className="btn btn-primary"
-						type="submit"
-					>Send it!</button>
-				</div>
-			</form>
+			<AddPostForm onAddPost={handleAddPost} />
 
 			{posts.length > 0 && (
 				<ul className="postlist">
