@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Counter from "./components/Counter";
 import PostCounter from "./components/PostCounter";
 import "./assets/scss/App.scss";
@@ -18,6 +18,7 @@ function App() {
 		{ id: 3, title: "Got state? 🚓", likes: 3 },
 	]);
 	const [salary, setSalary] = useState(10);
+	const inputPostTitleRef = useRef<HTMLInputElement>(null);
 
 	const handleChangeSalary = (amount: number) => {
 		if (salary + amount < 5) {
@@ -30,17 +31,6 @@ function App() {
 	}
 
 	const handleAddLike = (id: number) => {
-		console.log(`Post ${id} deserves more <3!`);
-
-		/*
-		setPosts((prevPosts) => {
-			return prevPosts.map(post => {
-				return post.id === id
-					? { ...post, likes: post.likes + 1 }
-					: post;
-			})
-		});
-		*/
 		setPosts((prevPosts) =>
 			prevPosts.map(post =>
 				post.id === id
@@ -50,13 +40,25 @@ function App() {
 		);
 	}
 
-	const handleAddPost = () => {
-		const title = prompt("What do you want to tell the world?");
-		if (!title) {
-			alert("mkai...");
+	const handleDelete = (id: number) => {
+		setPosts((prevPosts) =>
+			prevPosts.filter(post => post.id !== id)
+		);
+	}
+
+	const handleFormSubmit = (e: React.SubmitEvent) => {
+		// Stop form from being submitted (and causing a page reload)
+		e.preventDefault();
+
+		// Guard against inputPostTitleRef being null
+		if (!inputPostTitleRef.current) {
 			return;
 		}
 
+		// Get the value from the input-field using the reference
+		const title = inputPostTitleRef.current.value;
+
+		// Create a new post object
 		const newPost: Post = {
 			id: Math.max(0, ...posts.map(post => post.id)) + 1,
 			title,
@@ -64,12 +66,9 @@ function App() {
 		}
 
 		setPosts((prevPosts) => [...prevPosts, newPost]);
-	}
 
-	const handleDelete = (id: number) => {
-		setPosts((prevPosts) =>
-			prevPosts.filter(post => post.id !== id)
-		);
+		// Clear input field
+		inputPostTitleRef.current.value = "";
 	}
 
 	console.log("App is rendering...");
@@ -138,10 +137,23 @@ function App() {
 
 			<h2>Posts</h2>
 
-			<button
-				className="btn btn-primary mb-3"
-				onClick={handleAddPost}
-			>Add post</button>
+			<form onSubmit={handleFormSubmit}>
+				<div className="input-group mb-3">
+					<input
+						aria-label="What do you want to tell the world?"
+						className="form-control"
+						placeholder="I love react!"
+						ref={inputPostTitleRef}
+						type="text"
+						required
+					/>
+
+					<button
+						className="btn btn-primary"
+						type="submit"
+					>Send it!</button>
+				</div>
+			</form>
 
 			{posts.length > 0 && (
 				<ul className="postlist">
