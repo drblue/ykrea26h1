@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Counter from "./components/Counter";
 import PostCounter from "./components/PostCounter";
 import "./assets/scss/App.scss";
@@ -18,7 +18,7 @@ function App() {
 		{ id: 3, title: "Got state? 🚓", likes: 3 },
 	]);
 	const [salary, setSalary] = useState(10);
-	const inputPostTitleRef = useRef<HTMLInputElement>(null);
+	const [inputPostTitle, setInputPostTitle] = useState("");
 
 	const handleChangeSalary = (amount: number) => {
 		if (salary + amount < 5) {
@@ -50,25 +50,17 @@ function App() {
 		// Stop form from being submitted (and causing a page reload)
 		e.preventDefault();
 
-		// Guard against inputPostTitleRef being null
-		if (!inputPostTitleRef.current) {
-			return;
-		}
-
-		// Get the value from the input-field using the reference
-		const title = inputPostTitleRef.current.value;
-
 		// Create a new post object
 		const newPost: Post = {
 			id: Math.max(0, ...posts.map(post => post.id)) + 1,
-			title,
+			title: inputPostTitle,
 			likes: 0,
 		}
 
 		setPosts((prevPosts) => [...prevPosts, newPost]);
 
 		// Clear input field
-		inputPostTitleRef.current.value = "";
+		setInputPostTitle("");
 	}
 
 	console.log("App is rendering...");
@@ -142,9 +134,10 @@ function App() {
 					<input
 						aria-label="What do you want to tell the world?"
 						className="form-control"
+						onChange={e => setInputPostTitle(e.target.value)}
 						placeholder="I love react!"
-						ref={inputPostTitleRef}
 						type="text"
+						value={inputPostTitle}
 						required
 					/>
 
