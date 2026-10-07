@@ -1,12 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import ListGroup from "react-bootstrap/ListGroup";
+import TodoCounter from "./components/TodoCounter";
+import AddTodoForm from "./components/AddTodoForm";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
-import TodoCounter from "./components/TodoCounter";
 
 const initialTodos: Todo[] = [
 	{ id: 1, title: "Make coffee", completed: true },
@@ -16,23 +15,17 @@ const initialTodos: Todo[] = [
 ];
 
 function App() {
-	const [inputTitle, setInputTitle] = useState("");
 	const [todos, setTodos] = useState<Todo[]>(initialTodos);
 
-	const handleAddTodo = (e: React.SubmitEvent) => {
-		e.preventDefault();
-
+	const handleAddTodo = (title: string) => {
 		// Create a new todo and set a new list of todos containing
 		// the previous todos + new the todo
 		const newTodo: Todo = {
 			id: Math.max(0, ...todos.map(todo => todo.id)) + 1,
-			title: inputTitle,
+			title,
 			completed: false,
 		}
 		setTodos(prevTodos => [...prevTodos, newTodo]);
-
-		// Clear input field
-		setInputTitle("");
 	}
 
 	const handleDeleteTodo = (id: number) => {
@@ -52,22 +45,9 @@ function App() {
 		<Container className="py-2">
 			<h1>Simple Todos</h1>
 
-			<Form onSubmit={handleAddTodo}>
-				<InputGroup className="mb-3">
-					<Form.Control
-						aria-label="New todo title"
-						onChange={e => setInputTitle(e.target.value)}
-						placeholder="Learn about GTD"
-						value={inputTitle}
-						required
-					/>
-
-					<Button
-						type="submit"
-						variant="success"
-					>Create 👶🏻</Button>
-				</InputGroup>
-			</Form>
+			<AddTodoForm
+				onAddTodo={handleAddTodo}
+			/>
 
 			{todos.length > 0 ? (
 				<>
