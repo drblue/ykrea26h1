@@ -34,6 +34,19 @@ function App() {
 		setInputTitle("");
 	}
 
+	const handleDeleteTodo = (id: number) => {
+		setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+	}
+
+	const handleToggleTodo = (id: number) => {
+		setTodos(prevTodos => prevTodos.map(todo =>
+			(todo.id === id)
+				? { ...todo, completed: !todo.completed }
+				: todo
+			)
+		);
+	}
+
 	return (
 		<Container className="py-2">
 			<h1>Simple Todos</h1>
@@ -62,6 +75,20 @@ function App() {
 						key={todo.id}
 					>
 						<span className="todo-title">{todo.title}</span>
+
+						<div>
+							<Button
+								onClick={() => handleToggleTodo(todo.id)}
+								size="sm"  // btn-sm
+								variant="outline-warning"
+							>Toggle</Button>
+
+							<Button
+								onClick={() => handleDeleteTodo(todo.id)}
+								size="sm"  // btn-sm
+								variant="outline-danger"
+							>Delete</Button>
+						</div>
 					</ListGroup.Item>
 				))}
 			</ListGroup>

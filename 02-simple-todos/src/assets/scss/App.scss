@@ -9,11 +9,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .todolist {
-	.completed {
-		.todo-title {
-			color: $success;
-			font-style: italic;
-			text-decoration: line-through;
+	.list-group-item {
+		display: flex;
+		justify-content: space-between;
+
+		&.completed {
+			.todo-title {
+				color: $success;
+				font-style: italic;
+				text-decoration: line-through;
+			}
 		}
 	}
 }
