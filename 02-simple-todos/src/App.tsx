@@ -1,9 +1,8 @@
 import { useState } from "react";
 import Container from "react-bootstrap/Container";
-import ListGroup from "react-bootstrap/ListGroup";
 import AddTodoForm from "./components/AddTodoForm";
 import TodoCounter from "./components/TodoCounter";
-import TodoListItem from "./components/TodoListItem";
+import TodoList from "./components/TodoList";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
 
@@ -56,28 +55,20 @@ function App() {
 			{todos.length > 0 ? (
 				<>
 					<h2 className="h5 mb-2">💪🏻 Stuff I got to do</h2>
-					<ListGroup className="todolist mb-3">
-						{notFinishedTodos.map(todo => (
-							<TodoListItem
-								onDelete={handleDeleteTodo}
-								onToggle={handleToggleTodo}
-								key={todo.id}
-								todo={todo}
-							/>
-						))}
-					</ListGroup>
+					<TodoList
+						onDelete={handleDeleteTodo}
+						onToggle={handleToggleTodo}
+						todos={notFinishedTodos}
+					>
+					</TodoList>
 
 					<h2 className="h5 mb-2">🥺 Stuff I've done</h2>
-					<ListGroup className="todolist mb-3">
-						{finishedTodos.map(todo => (
-							<TodoListItem
-								onDelete={handleDeleteTodo}
-								onToggle={handleToggleTodo}
-								key={todo.id}
-								todo={todo}
-							/>
-						))}
-					</ListGroup>
+					<TodoList
+						onDelete={handleDeleteTodo}
+						onToggle={handleToggleTodo}
+						todos={finishedTodos}
+					>
+					</TodoList>
 
 					<TodoCounter
 						completed={finishedTodos.length}
