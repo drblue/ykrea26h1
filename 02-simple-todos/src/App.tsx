@@ -68,32 +68,39 @@ function App() {
 				</InputGroup>
 			</Form>
 
-			<ListGroup className="todolist mb-3">
-				{todos.map(todo => (
-					<ListGroup.Item
-						className={todo.completed ? "completed" : ""}
-						key={todo.id}
-					>
-						<span className="todo-title">{todo.title}</span>
+			{todos.length > 0 ? (
+				<>
+					<ListGroup className="todolist mb-3">
+						{todos.map(todo => (
+							<ListGroup.Item
+								className={todo.completed ? "completed" : ""}
+								key={todo.id}
+							>
+								<span className="todo-title">{todo.title}</span>
 
-						<div>
-							<Button
-								onClick={() => handleToggleTodo(todo.id)}
-								size="sm"  // btn-sm
-								variant="outline-warning"
-							>Toggle</Button>
+								<div>
+									<Button
+										onClick={() => handleToggleTodo(todo.id)}
+										size="sm"  // btn-sm
+										variant="outline-warning"
+									>Toggle</Button>
 
-							<Button
-								onClick={() => handleDeleteTodo(todo.id)}
-								size="sm"  // btn-sm
-								variant="outline-danger"
-							>Delete</Button>
-						</div>
-					</ListGroup.Item>
-				))}
-			</ListGroup>
+									<Button
+										onClick={() => handleDeleteTodo(todo.id)}
+										size="sm"  // btn-sm
+										variant="outline-danger"
+									>Delete</Button>
+								</div>
+							</ListGroup.Item>
+						))}
+					</ListGroup>
 
-			<p>{todos.filter(todo => todo.completed).length} av {todos.length} avklarade.</p>
+					<p>{todos.filter(todo => todo.completed).length} av {todos.length} avklarade.</p>
+				</>
+			) : (
+				<p>You ain't got no todos to do, time to party!!111 Untz untz untz 🥳!</p>
+			)}
+
 		</Container>
 	);
 }
