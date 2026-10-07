@@ -21,8 +21,8 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 	}
 
 	return (
-		<Form onSubmit={handleSubmit}>
-			<InputGroup className="mb-3">
+		<Form onSubmit={handleSubmit} className="mb-3">
+			<InputGroup>
 				<Form.Control
 					aria-label="New todo title"
 					onChange={e => setInputTitle(e.target.value)}
@@ -37,6 +37,10 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 					variant="success"
 				>Create 👶🏻</Button>
 			</InputGroup>
+
+			{inputTitle.trim().length > 0 && inputTitle.trim().length < 3 && (
+				<Form.Text className="text-danger text-small">That's too short todo to do, better do it right away!</Form.Text>
+			)}
 		</Form>
 	)
 }
