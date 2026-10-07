@@ -6,6 +6,7 @@ import TodoCounter from "./components/TodoCounter";
 import AddTodoForm from "./components/AddTodoForm";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
+import TodoListItem from "./components/TodoListItem";
 
 const initialTodos: Todo[] = [
 	{ id: 1, title: "Make coffee", completed: true },
@@ -53,26 +54,10 @@ function App() {
 				<>
 					<ListGroup className="todolist mb-3">
 						{todos.map(todo => (
-							<ListGroup.Item
-								className={todo.completed ? "completed" : ""}
+							<TodoListItem
 								key={todo.id}
-							>
-								<span className="todo-title">{todo.title}</span>
-
-								<div>
-									<Button
-										onClick={() => handleToggleTodo(todo.id)}
-										size="sm"  // btn-sm
-										variant="outline-warning"
-									>Toggle</Button>
-
-									<Button
-										onClick={() => handleDeleteTodo(todo.id)}
-										size="sm"  // btn-sm
-										variant="outline-danger"
-									>Delete</Button>
-								</div>
-							</ListGroup.Item>
+								todo={todo}
+							/>
 						))}
 					</ListGroup>
 
