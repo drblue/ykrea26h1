@@ -3,10 +3,12 @@ import ListGroup from "react-bootstrap/ListGroup";
 import type { Todo } from "../types/Todo.types";
 
 interface TodoListItemProps {
+	onDelete: (id: number) => void;
+	onToggle: (id: number) => void;
 	todo: Todo;
 }
 
-const TodoListItem = ({ todo }: TodoListItemProps) => {
+const TodoListItem = ({ onDelete, onToggle, todo }: TodoListItemProps) => {
 	return (
 		<ListGroup.Item
 			className={todo.completed ? "completed" : ""}
@@ -15,13 +17,13 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
 
 			<div>
 				<Button
-					// onClick={() => handleToggleTodo(todo.id)}
+					onClick={() => onToggle(todo.id)}
 					size="sm"  // btn-sm
 					variant="outline-warning"
 				>Toggle</Button>
 
 				<Button
-					// onClick={() => handleDeleteTodo(todo.id)}
+					onClick={() => onDelete(todo.id)}
 					size="sm"  // btn-sm
 					variant="outline-danger"
 				>Delete</Button>

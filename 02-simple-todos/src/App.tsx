@@ -55,6 +55,8 @@ function App() {
 					<ListGroup className="todolist mb-3">
 						{todos.map(todo => (
 							<TodoListItem
+								onDelete={handleDeleteTodo}
+								onToggle={handleToggleTodo}
 								key={todo.id}
 								todo={todo}
 							/>
