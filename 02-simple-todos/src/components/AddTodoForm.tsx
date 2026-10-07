@@ -9,12 +9,13 @@ interface AddTodoFormProps {
 
 const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 	const [inputTitle, setInputTitle] = useState("");
+	const trimmedInputTitle = inputTitle.trim();
 
 	const handleSubmit = (e: React.SubmitEvent) => {
 		e.preventDefault();
 
 		// 🙋 Tell parent that someone wants to create a new todo with the title
-		onAddTodo(inputTitle.trim());
+		onAddTodo(trimmedInputTitle);
 
 		// Clear input field
 		setInputTitle("");
@@ -32,13 +33,13 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 				/>
 
 				<Button
-					disabled={inputTitle.trim().length < 3}
+					disabled={trimmedInputTitle.length < 3}
 					type="submit"
 					variant="success"
 				>Create 👶🏻</Button>
 			</InputGroup>
 
-			{inputTitle.trim().length > 0 && inputTitle.trim().length < 3 && (
+			{trimmedInputTitle.length > 0 && trimmedInputTitle.length < 3 && (
 				<Form.Text className="text-danger text-small">That's too short todo to do, better do it right away!</Form.Text>
 			)}
 		</Form>
