@@ -14,7 +14,7 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 		e.preventDefault();
 
 		// 🙋 Tell parent that someone wants to create a new todo with the title
-		onAddTodo(inputTitle);
+		onAddTodo(inputTitle.trim());
 
 		// Clear input field
 		setInputTitle("");
@@ -32,6 +32,7 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 				/>
 
 				<Button
+					disabled={inputTitle.trim().length < 3}
 					type="submit"
 					variant="success"
 				>Create 👶🏻</Button>
