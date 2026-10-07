@@ -1,12 +1,11 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
-import TodoCounter from "./components/TodoCounter";
 import AddTodoForm from "./components/AddTodoForm";
+import TodoCounter from "./components/TodoCounter";
+import TodoListItem from "./components/TodoListItem";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
-import TodoListItem from "./components/TodoListItem";
 
 const initialTodos: Todo[] = [
 	{ id: 1, title: "Make coffee", completed: true },
@@ -42,6 +41,10 @@ function App() {
 		);
 	}
 
+	// Derive list of completed/incompleted todos from the `todos` state
+	const finishedTodos = todos.filter(todo => todo.completed);
+	const notFinishedTodos = todos.filter(todo => !todo.completed);
+
 	return (
 		<Container className="py-2">
 			<h1>Simple Todos</h1>
@@ -52,8 +55,21 @@ function App() {
 
 			{todos.length > 0 ? (
 				<>
+					<h2 className="h5 mb-2">💪🏻 Stuff I got to do</h2>
 					<ListGroup className="todolist mb-3">
-						{todos.map(todo => (
+						{notFinishedTodos.map(todo => (
+							<TodoListItem
+								onDelete={handleDeleteTodo}
+								onToggle={handleToggleTodo}
+								key={todo.id}
+								todo={todo}
+							/>
+						))}
+					</ListGroup>
+
+					<h2 className="h5 mb-2">🥺 Stuff I've done</h2>
+					<ListGroup className="todolist mb-3">
+						{finishedTodos.map(todo => (
 							<TodoListItem
 								onDelete={handleDeleteTodo}
 								onToggle={handleToggleTodo}
@@ -64,7 +80,7 @@ function App() {
 					</ListGroup>
 
 					<TodoCounter
-						completed={todos.filter(todo => todo.completed).length}
+						completed={finishedTodos.length}
 						total={todos.length}
 					 />
 				</>
