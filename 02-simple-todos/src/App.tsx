@@ -6,6 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import ListGroup from "react-bootstrap/ListGroup";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
+import TodoCounter from "./components/TodoCounter";
 
 const initialTodos: Todo[] = [
 	{ id: 1, title: "Make coffee", completed: true },
@@ -95,7 +96,10 @@ function App() {
 						))}
 					</ListGroup>
 
-					<p>{todos.filter(todo => todo.completed).length} av {todos.length} avklarade.</p>
+					<TodoCounter
+						completed={todos.filter(todo => todo.completed).length}
+						total={todos.length}
+					 />
 				</>
 			) : (
 				<p>You ain't got no todos to do, time to party!!111 Untz untz untz 🥳!</p>
