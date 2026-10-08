@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Clock from "./components/Clock";
+import ClassClock from "./components/ClassClock";
 import "./assets/scss/App.scss";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
 				{showClock ? "🕵 clock" : "👀 clock"}
 			</Button>
 
-			{showClock && <Clock />}
+			{showClock && <ClassClock />}
 		</Container>
 	);
 }
