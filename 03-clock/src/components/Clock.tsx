@@ -8,11 +8,18 @@ const Clock = () => {
 
 	useEffect(() => {
 		console.log("🔫 Starting clock...");
-		setInterval(() => {
+		const intervalId = setInterval(() => {
 			const now = new Date().toLocaleTimeString();
 			console.log("🕰️ Tick...", now);
 			setTime(now);
 		}, 1000);
+
+		return () => {
+			// This clean-up function will be executed when
+			// the component is about to be unmounted
+			console.log("💣💥 Clock is being unmounted 😰 Stopping timer to prevent time paradoxes 😎");
+			clearInterval(intervalId);
+		}
 	}, []);
 
 	return (
