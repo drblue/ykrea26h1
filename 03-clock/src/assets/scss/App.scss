@@ -1,0 +1,13 @@
+@import "bootstrap/scss/bootstrap";
+
+.center-xy {
+	display: grid;
+	place-items: center;
+	min-height: 100vh;
+}
+
+#clock {
+	@extend .display-1;
+	font-family: $font-family-monospace;
+	text-align: center;
+}
