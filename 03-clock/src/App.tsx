@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Clock from "./components/Clock";
 import "./assets/scss/App.scss";
 
 function App() {
-	const [time, setTime] = useState(() => {
-		console.log("🔋 Initializing flux capacitor...");
-		return new Date().toLocaleTimeString();
-	});
-
-	useEffect(() => {
-		console.log("🔫 Starting clock...");
-		setInterval(() => {
-			const now = new Date().toLocaleTimeString();
-			console.log("🕰️ Tick...", now);
-			setTime(now);
-		}, 1000);
-	}, []);
-
-	console.log("🎨 Clock is rendering...");
+	const [showClock, setShowClock] = useState(false);
 
 	return (
 		<Container className="center-xy">
-			<div id="clock">
-				{time}
-			</div>
+			<Button onClick={() => setShowClock(!showClock)}>
+				{showClock ? "🕵 clock" : "👀 clock"}
+			</Button>
+
+			{showClock && <Clock />}
 		</Container>
 	);
 }
