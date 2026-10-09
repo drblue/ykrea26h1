@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import AddTodoForm from "./components/AddTodoForm";
 import TodoCounter from "./components/TodoCounter";
@@ -6,15 +6,8 @@ import TodoList from "./components/TodoList";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
 
-const initialTodos: Todo[] = [
-	{ id: 1, title: "Make coffee", completed: true },
-	{ id: 2, title: "Drink coffee", completed: false },
-	{ id: 3, title: "Drink MOAR coffee", completed: false },
-	{ id: 4, title: "Drink ALL ZE coffee", completed: false },
-];
-
 function App() {
-	const [todos, setTodos] = useState<Todo[]>(initialTodos);
+	const [todos, setTodos] = useState<Todo[]>([]);
 
 	const handleAddTodo = (title: string) => {
 		// Create a new todo and set a new list of todos containing
@@ -39,6 +32,20 @@ function App() {
 			)
 		);
 	}
+
+	useEffect(() => {
+		const getData = async () => {
+			// Make request to API
+			const res = await fetch("http://localhost:3000/todos");
+			if (!res.ok) {
+				throw new Error("Response was not OK!");
+			}
+
+			const data = await res.json() as Todo[];
+			setTodos(data);
+		}
+		getData();
+	}, []);
 
 	// Derive list of completed/incompleted todos from the `todos` state
 	const finishedTodos = todos.filter(todo => todo.completed);
