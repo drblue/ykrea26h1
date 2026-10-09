@@ -1,0 +1,33 @@
+{
+  "name": "04-async-todos",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "server": "json-server --watch data/db.json --port 3000 --delay 1500"
+  },
+  "dependencies": {
+    "json-server": "^0.17.4",
+    "react": "^19.2.8",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "bootstrap": "^5.3.8",
+    "oxlint": "^1.81.0",
+    "sass": "1.77.6",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
+  }
+}
