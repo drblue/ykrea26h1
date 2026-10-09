@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import AddTodoForm from "./components/AddTodoForm";
 import TodoCounter from "./components/TodoCounter";
 import TodoList from "./components/TodoList";
-import { fetchTodos } from "./services/TodoAPI";
+import { getTodos } from "./services/TodoAPI";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
 
@@ -28,7 +28,7 @@ function App() {
 	useEffect(() => {
 		const getData = async () => {
 			try {
-				const data = await fetchTodos();
+				const data = await getTodos();
 				setTodos(data);
 			} catch {
 				// Something bad happened
