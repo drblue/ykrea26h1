@@ -13,6 +13,21 @@ function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [todos, setTodos] = useState<Todo[] | null>(null);
 
+	const getData = async () => {
+		// Set loading state
+		setIsLoading(true);
+
+		try {
+			const data = await getTodos();
+			setTodos(data);
+		} catch {
+			// Something bad happened
+			setError("Something bad happened.");
+		}
+
+		setIsLoading(false);
+	}
+
 	const handleAddTodo = async (title: string) => {
 		try {
 			await createTodo({
@@ -28,6 +43,8 @@ function App() {
 			// Re-throw error
 			throw err;
 		}
+
+		await getData();
 	}
 
 	const handleDeleteTodo = (_id: number) => {
@@ -39,18 +56,9 @@ function App() {
 	}
 
 	useEffect(() => {
-		const getData = async () => {
-			try {
-				const data = await getTodos();
-				setTodos(data);
-			} catch {
-				// Something bad happened
-				setError("Something bad happened.");
-			}
-
-			setIsLoading(false);
-		}
-		getData();
+		(async () => {
+			await getData();
+		})();
 	}, []);
 
 	// Derive list of completed/incompleted todos from the `todos` state
