@@ -14,10 +14,18 @@ function App() {
 	const [todos, setTodos] = useState<Todo[] | null>(null);
 
 	const handleAddTodo = async (title: string) => {
-		await createTodo({
-			title,
-			completed: false,
-		});
+		try {
+			await createTodo({
+				title,
+				completed: false,
+			});
+		} catch (err) {
+			if (err instanceof Error) {
+				setError("Could not create todo: " + err.message);
+			} else {
+				setError("Ouch. Stop throwing things that aren't Errors at me.");
+			}
+		}
 	}
 
 	const handleDeleteTodo = (_id: number) => {
