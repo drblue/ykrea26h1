@@ -50,8 +50,8 @@ function App() {
 	const handleDeleteTodo = async (id: number) => {
 		try {
 			await deleteTodo(id);
-			await getData();
 
+			setTodos(prevTodos => (prevTodos ?? []).filter(t => t.id !== id));
 		} catch (err) {
 			if (err instanceof Error) {
 				setError("Could not delete todo: " + err.message);
@@ -66,7 +66,13 @@ function App() {
 			await updateTodo(todo.id, {
 				completed: !todo.completed,
 			});
-			await getData();
+
+			setTodos(prevTodos =>
+				(prevTodos ?? []).map(t =>
+					t.id === todo.id
+						? { ...t, completed: !todo.completed }
+						: t
+			));
 
 		} catch (err) {
 			if (err instanceof Error) {
