@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { CreateTodoPayload, Todo } from "../types/Todo.types";
+import type { CreateTodoPayload, Todo, UpdateTodoPayload } from "../types/Todo.types";
 
 /**
  * Get all todos
@@ -14,6 +14,14 @@ export const getTodos = async () => {
  */
 export const createTodo = async (payload: CreateTodoPayload) => {
 	const res = await axios.post<Todo>("http://localhost:3000/todos", payload);
+	return res.data;
+}
+
+/**
+ * Update a todo
+ */
+export const updateTodo = async (id: number, payload: UpdateTodoPayload) => {
+	const res = await axios.patch<Todo>("http://localhost:3000/todos/" + id, payload);
 	return res.data;
 }
 

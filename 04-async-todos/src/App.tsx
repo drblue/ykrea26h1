@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import AddTodoForm from "./components/AddTodoForm";
 import TodoCounter from "./components/TodoCounter";
 import TodoList from "./components/TodoList";
-import { createTodo, deleteTodo, getTodos } from "./services/TodoAPI";
+import { createTodo, deleteTodo, getTodos, updateTodo } from "./services/TodoAPI";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
 
@@ -61,8 +61,20 @@ function App() {
 		}
 	}
 
-	const handleToggleTodo = (_id: number) => {
-		// FIX ME: Toggle todo on server
+	const handleToggleTodo = async (todo: Todo) => {
+		try {
+			await updateTodo(todo.id, {
+				completed: !todo.completed,
+			});
+			await getData();
+
+		} catch (err) {
+			if (err instanceof Error) {
+				setError("Could not toggle todo: " + err.message);
+			} else {
+				setError("It's not me, it's you.");
+			}
+		}
 	}
 
 	useEffect(() => {
