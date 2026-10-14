@@ -30,10 +30,12 @@ function App() {
 
 	const handleAddTodo = async (title: string) => {
 		try {
-			await createTodo({
+			const createdTodo = await createTodo({
 				title,
 				completed: false,
 			});
+
+			setTodos(prevTodos => [...prevTodos ?? [], createdTodo]);
 		} catch (err) {
 			if (err instanceof Error) {
 				setError("Could not create todo: " + err.message);
@@ -43,8 +45,6 @@ function App() {
 			// Re-throw error
 			throw err;
 		}
-
-		await getData();
 	}
 
 	const handleDeleteTodo = (_id: number) => {
