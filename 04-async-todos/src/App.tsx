@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import AddTodoForm from "./components/AddTodoForm";
 import TodoCounter from "./components/TodoCounter";
 import TodoList from "./components/TodoList";
-import { getTodos } from "./services/TodoAPI";
+import { createTodo, getTodos } from "./services/TodoAPI";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
 
@@ -13,8 +13,11 @@ function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [todos, setTodos] = useState<Todo[] | null>(null);
 
-	const handleAddTodo = (_title: string) => {
-		// FIX ME: Create todo on server
+	const handleAddTodo = async (title: string) => {
+		await createTodo({
+			title,
+			completed: false,
+		});
 	}
 
 	const handleDeleteTodo = (_id: number) => {

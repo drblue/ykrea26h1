@@ -4,18 +4,18 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
 interface AddTodoFormProps {
-	onAddTodo: (title: string) => void;
+	onAddTodo: (title: string) => Promise<void>;
 }
 
 const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 	const [inputTitle, setInputTitle] = useState("");
 	const trimmedInputTitle = inputTitle.trim();
 
-	const handleSubmit = (e: React.SubmitEvent) => {
+	const handleSubmit = async (e: React.SubmitEvent) => {
 		e.preventDefault();
 
 		// 🙋 Tell parent that someone wants to create a new todo with the title
-		onAddTodo(trimmedInputTitle);
+		await onAddTodo(trimmedInputTitle);
 
 		// Clear input field
 		setInputTitle("");
