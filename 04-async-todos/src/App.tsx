@@ -25,6 +25,8 @@ function App() {
 			} else {
 				setError("Ouch. Stop throwing things that aren't Errors at me.");
 			}
+			// Re-throw error
+			throw err;
 		}
 	}
 

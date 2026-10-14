@@ -8,17 +8,27 @@ interface AddTodoFormProps {
 }
 
 const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
+	const [isPending, setIsPending] = useState(false);
 	const [inputTitle, setInputTitle] = useState("");
 	const trimmedInputTitle = inputTitle.trim();
 
 	const handleSubmit = async (e: React.SubmitEvent) => {
 		e.preventDefault();
 
-		// 🙋 Tell parent that someone wants to create a new todo with the title
-		await onAddTodo(trimmedInputTitle);
+		// Set pending state
+		setIsPending(true);
 
-		// Clear input field
-		setInputTitle("");
+		try {
+			// 🙋 Tell parent that someone wants to create a new todo with the title
+			await onAddTodo(trimmedInputTitle);
+
+			// Clear input field and reset pending state
+			setInputTitle("");
+		} catch {
+			// Keep the input
+		} finally {
+			setIsPending(false);
+		}
 	}
 
 	return (
@@ -33,7 +43,7 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 				/>
 
 				<Button
-					disabled={trimmedInputTitle.length < 3}
+					disabled={trimmedInputTitle.length < 3 || isPending}
 					type="submit"
 					variant="success"
 				>Create 👶🏻</Button>
