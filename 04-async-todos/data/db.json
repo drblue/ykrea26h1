@@ -16,16 +16,6 @@
       "completed": false
     },
     {
-      "title": "Delete me",
-      "completed": false,
-      "id": 4
-    },
-    {
-      "title": "React more",
-      "completed": false,
-      "id": 5
-    },
-    {
       "title": "Learn about async/await",
       "completed": false,
       "id": 6

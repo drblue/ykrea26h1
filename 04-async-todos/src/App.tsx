@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import AddTodoForm from "./components/AddTodoForm";
 import TodoCounter from "./components/TodoCounter";
 import TodoList from "./components/TodoList";
-import { createTodo, getTodos } from "./services/TodoAPI";
+import { createTodo, deleteTodo, getTodos } from "./services/TodoAPI";
 import type { Todo } from "./types/Todo.types";
 import "./assets/scss/App.scss";
 
@@ -47,8 +47,18 @@ function App() {
 		}
 	}
 
-	const handleDeleteTodo = (_id: number) => {
-		// FIX ME: Delete todo on server
+	const handleDeleteTodo = async (id: number) => {
+		try {
+			await deleteTodo(id);
+			await getData();
+
+		} catch (err) {
+			if (err instanceof Error) {
+				setError("Could not delete todo: " + err.message);
+			} else {
+				setError("It's not me, it's you.");
+			}
+		}
 	}
 
 	const handleToggleTodo = (_id: number) => {
