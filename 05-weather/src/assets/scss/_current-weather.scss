@@ -1,0 +1,91 @@
+#current-weather {
+	border-top: 1px solid var(--bs-border-color);
+	padding-top: 2.25rem;
+
+	#location {
+		display: flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		overflow-wrap: anywhere;
+	}
+
+	.country {
+		color: var(--bs-secondary-color);
+		font-size: 1rem;
+		letter-spacing: normal;
+	}
+
+	.weather-summary {
+		display: flex;
+		align-items: center;
+		gap: 3rem;
+		flex-wrap: wrap;
+		padding: 1.5rem 0 2rem;
+	}
+
+	.temperature {
+		font-size: clamp(5rem, 14vw, 8rem);
+		font-weight: 300;
+		letter-spacing: -0.06em;
+		line-height: 1;
+		margin: 0;
+
+		span {
+			display: block;
+			font-size: 0.875rem;
+			font-weight: 400;
+			letter-spacing: normal;
+			color: var(--bs-secondary-color);
+			margin-top: 0.75rem;
+		}
+	}
+
+	.conditions {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+	}
+
+	.weather-details {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+		border-top: 1px solid var(--bs-border-color);
+		padding-top: 2rem;
+		margin: 0;
+
+		dt {
+			color: var(--bs-secondary-color);
+			font-size: 0.875rem;
+			font-weight: 400;
+			margin-bottom: 0.5rem;
+		}
+
+		dd {
+			font-size: clamp(1.5rem, 5vw, 1.75rem);
+			font-weight: 400;
+			margin: 0;
+		}
+	}
+
+	.weather-footer {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		font-size: 0.875rem;
+		color: var(--bs-secondary-color);
+		margin-top: 3rem;
+	}
+
+	.updated {
+		margin: 0;
+	}
+}
