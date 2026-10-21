@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import CurrentWeather from "./components/CurrentWeather";
 import SearchCity from "./components/SearchCity";
@@ -9,21 +10,31 @@ import LoadingWeather from "./components/LoadingWeather";
 
 function App() {
 	const [currentWeather, setCurrentWeather] = useState<CurrentWeatherData | null>(null);
+	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSearch = async (location: string) => {
-		console.log(`Someone wants the current weather at '${location}'`);
-
 		// Reset state
 		setCurrentWeather(null);
+		setError(null);
 		setIsLoading(true);
 
-		// Call API and get current weather at `location`
-		const data = await getCurrentWeather(location);
+		try {
+			// Call API and get current weather at `location`
+			const data = await getCurrentWeather(location);
 
-		// Update current weather state with the API-response
-		setCurrentWeather(data);
-		setIsLoading(false);
+			// Update current weather state with the API-response
+			setCurrentWeather(data);
+
+		} catch (err) {
+			if (err instanceof Error) {
+				setError(err.message);
+			} else {
+				setError("This should never happen...");
+			}
+		} finally {
+			setIsLoading(false);
+		}
 	}
 
 	return (
@@ -32,7 +43,9 @@ function App() {
 				<h1>Weather</h1>
 			</header>
 
-			<SearchCity onSearch={handleSearch} />
+			<SearchCity isLoading={isLoading} onSearch={handleSearch} />
+
+			{error && <Alert variant="danger">{error}</Alert>}
 
 			{isLoading && <LoadingWeather />}
 

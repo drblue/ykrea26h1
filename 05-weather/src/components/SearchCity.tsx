@@ -4,16 +4,17 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
 interface SearchCityProps {
+	isLoading: boolean;
 	onSearch: (location: string) => Promise<void>;
 }
 
-function SearchCity({ onSearch }: SearchCityProps) {
+function SearchCity({ isLoading, onSearch }: SearchCityProps) {
 	const [city, setCity] = useState("");
 
 	const handleSubmit = (e: React.SubmitEvent) => {
 		e.preventDefault();
 
-		if (isCityInvalid) {
+		if (isCityInvalid || isLoading) {
 			return;
 		}
 
@@ -44,7 +45,7 @@ function SearchCity({ onSearch }: SearchCityProps) {
 					/>
 
 					<Button
-						disabled={isCityInvalid}
+						disabled={isCityInvalid || isLoading}
 						type="submit"
 						variant="primary"
 					>Search</Button>
