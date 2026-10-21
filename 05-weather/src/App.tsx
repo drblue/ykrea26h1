@@ -4,13 +4,17 @@ import SearchCity from "./components/SearchCity";
 import "./assets/scss/App.scss";
 
 function App() {
+	const handleSearch = async (location: string) => {
+		console.log(`Someone wants the current weather at '${location}'`);
+	}
+
 	return (
 		<Container as="main" id="app">
 			<header className="app-header">
 				<h1>Weather</h1>
 			</header>
 
-			<SearchCity />
+			<SearchCity onSearch={handleSearch} />
 			<CurrentWeather />
 		</Container>
 	);
