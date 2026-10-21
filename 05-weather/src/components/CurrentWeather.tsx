@@ -6,6 +6,8 @@ interface CurrentWeatherProps {
 }
 
 function CurrentWeather({ data }: CurrentWeatherProps) {
+	const freshness = new Date(data.dt * 1000);
+
 	return (
 		<section id="current-weather" aria-labelledby="location">
 			<h2 id="location">{data.name} <span className="country">{data.sys.country}</span></h2>
@@ -31,7 +33,9 @@ function CurrentWeather({ data }: CurrentWeatherProps) {
 
 			<footer className="weather-footer">
 				<p className="updated">
-					{/* Updated <time dateTime="2026-10-15T08:30:00Z">15 Oct 2026, 10:30</time> */}
+					Updated <time dateTime={freshness.toISOString()}>
+						{freshness.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}
+					</time>
 				</p>
 				<span>OpenWeatherMap</span>
 			</footer>
