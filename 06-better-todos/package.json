@@ -15,7 +15,8 @@
     "json-server": "^0.17.4",
     "react": "^19.2.8",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router": "^8.5.0"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
