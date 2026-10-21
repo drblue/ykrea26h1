@@ -1,9 +1,10 @@
-import Spinner from "react-bootstrap/Spinner";
+import Image from "react-bootstrap/Image";
+import imgLoading from "../assets/images/loading.svg";
 
 function LoadingWeather() {
 	return (
 		<div className="weather-status" role="status">
-			<Spinner animation="border" className="weather-spinner" aria-hidden="true" />
+			<Image src={imgLoading} className="weather-man" alt="Man holding umbrella" fluid />
 			<p>Fetching the latest weather…</p>
 		</div>
 	);
