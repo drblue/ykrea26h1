@@ -7,6 +7,7 @@ interface CurrentWeatherProps {
 
 function CurrentWeather({ data }: CurrentWeatherProps) {
 	const freshness = new Date(data.dt * 1000);
+	const isDaytime = data.dt > data.sys.sunrise && data.dt < data.sys.sunset;
 
 	return (
 		<section id="current-weather" aria-labelledby="location">
@@ -19,6 +20,12 @@ function CurrentWeather({ data }: CurrentWeatherProps) {
 					))}
 				</ul>
 			</div>
+
+			<p className="daytime-nighttime">
+				{isDaytime
+					? <span>☀️ Daytime!</span>
+					: <span>🌙 Nighttime!</span>}
+			</p>
 
 			<dl className="weather-details">
 				<div>
