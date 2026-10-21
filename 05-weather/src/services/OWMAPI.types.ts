@@ -24,6 +24,7 @@ export interface CurrentWeatherData {
 		sunrise: number;
 		sunset: number;
 	};
+	weather: CurrentWeatherCondition[];
 	wind: {
 		speed: number;
 	};
