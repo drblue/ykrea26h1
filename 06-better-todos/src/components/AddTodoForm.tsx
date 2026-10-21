@@ -1,0 +1,59 @@
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+
+interface AddTodoFormProps {
+	onAddTodo: (title: string) => Promise<void>;
+}
+
+const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
+	const [isPending, setIsPending] = useState(false);
+	const [inputTitle, setInputTitle] = useState("");
+	const trimmedInputTitle = inputTitle.trim();
+
+	const handleSubmit = async (e: React.SubmitEvent) => {
+		e.preventDefault();
+
+		// Set pending state
+		setIsPending(true);
+
+		try {
+			// 🙋 Tell parent that someone wants to create a new todo with the title
+			await onAddTodo(trimmedInputTitle);
+
+			// Clear input field and reset pending state
+			setInputTitle("");
+		} catch {
+			// Keep the input
+		} finally {
+			setIsPending(false);
+		}
+	}
+
+	return (
+		<Form onSubmit={handleSubmit} className="mb-3">
+			<InputGroup>
+				<Form.Control
+					aria-label="New todo title"
+					onChange={e => setInputTitle(e.target.value)}
+					placeholder="Learn about GTD"
+					value={inputTitle}
+					required
+				/>
+
+				<Button
+					disabled={trimmedInputTitle.length < 3 || isPending}
+					type="submit"
+					variant="success"
+				>Create 👶🏻</Button>
+			</InputGroup>
+
+			{trimmedInputTitle.length > 0 && trimmedInputTitle.length < 3 && (
+				<Form.Text className="text-danger text-small">That's too short todo to do, better do it right away!</Form.Text>
+			)}
+		</Form>
+	)
+}
+
+export default AddTodoForm;
