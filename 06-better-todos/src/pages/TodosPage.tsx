@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
+import ListGroup from "react-bootstrap/ListGroup";
+import { Link } from "react-router";
 import AddTodoForm from "../components/AddTodoForm";
 import TodoCounter from "../components/TodoCounter";
-import TodoList from "../components/TodoList";
-import { createTodo, deleteTodo, getTodos, updateTodo } from "../services/TodoAPI";
+import { createTodo, getTodos } from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
 
 function TodosPage() {
@@ -45,6 +46,7 @@ function TodosPage() {
 		}
 	}
 
+	/*
 	const handleDeleteTodo = async (id: number) => {
 		try {
 			await deleteTodo(id);
@@ -80,16 +82,13 @@ function TodosPage() {
 			}
 		}
 	}
+	*/
 
 	useEffect(() => {
 		(async () => {
 			await getData();
 		})();
 	}, []);
-
-	// Derive list of completed/incompleted todos from the `todos` state
-	const finishedTodos = todos?.filter(todo => todo.completed) ?? [];
-	const notFinishedTodos = todos?.filter(todo => !todo.completed) ?? [];
 
 	return (
 		<>
@@ -106,24 +105,22 @@ function TodosPage() {
 			{!isLoading && todos && (
 				todos.length > 0 ? (
 					<>
-						<h2 className="h5 mb-2">💪🏻 Stuff I got to do</h2>
-						<TodoList
-							onDelete={handleDeleteTodo}
-							onToggle={handleToggleTodo}
-							todos={notFinishedTodos}
-						>
-						</TodoList>
-
-						<h2 className="h5 mb-2">🥺 Stuff I've done</h2>
-						<TodoList
-							onDelete={handleDeleteTodo}
-							onToggle={handleToggleTodo}
-							todos={finishedTodos}
-						>
-						</TodoList>
+						<ListGroup className="todolist mb-3">
+							{todos.map(todo => (
+								<ListGroup.Item
+									action
+									as={Link}
+									className={todo.completed ? "completed" : ""}
+									key={todo.id}
+									to={"/todos/" + todo.id}
+								>
+									<span className="todo-title">{todo.title}</span>
+								</ListGroup.Item>
+							))}
+						</ListGroup>
 
 						<TodoCounter
-							completed={finishedTodos.length}
+							completed={todos.filter(todo => todo.completed).length}
 							total={todos.length}
 						/>
 					</>
