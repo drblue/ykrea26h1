@@ -10,6 +10,14 @@ export const getTodos = async () => {
 }
 
 /**
+ * Get a todo
+ */
+export const getTodo = async (id: number) => {
+	const res = await axios.get<Todo>("http://localhost:3000/todos/" + id);
+	return res.data;
+}
+
+/**
  * Create a todo
  */
 export const createTodo = async (payload: CreateTodoPayload) => {
