@@ -68,6 +68,9 @@ const TodoPage = () => {
 			</div>
 
 			{/* Back to all todos */}
+			<Link to="/todos" className="btn btn-secondary" role="button">
+				&laquo; All todos
+			</Link>
 		</>
 	)
 }
