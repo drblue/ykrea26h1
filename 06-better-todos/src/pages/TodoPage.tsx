@@ -52,7 +52,9 @@ const TodoPage = () => {
 			await TodoAPI.deleteTodo(id);
 
 			// 🚢 Navigate the user
-			navigate("/todos");
+			navigate("/todos", {
+				replace: true,  // replace the current entry in the History stack with this URL
+			});
 
 		} catch (err) {
 			if (err instanceof Error) {
