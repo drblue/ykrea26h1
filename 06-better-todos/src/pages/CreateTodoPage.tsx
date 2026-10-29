@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router";
-import AddTodoForm from "../components/AddTodoForm";
+import TodoForm from "../components/TodoForm";
 import { createTodo } from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
 
@@ -40,8 +40,8 @@ const CreateTodoPage = () => {
 
 			{error !== null && <Alert variant="danger">{error ?? "Unknown error."}</Alert>}
 
-			<AddTodoForm
-				onAddTodo={handleAddTodo}
+			<TodoForm
+				onSave={handleAddTodo}
 			/>
 
 			{createdTodo && (
