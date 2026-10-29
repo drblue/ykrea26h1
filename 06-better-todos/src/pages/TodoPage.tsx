@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 import { Link, useParams } from "react-router";
+import Loading from "../components/Loading";
 import * as TodoAPI from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
-import Loading from "../components/Loading";
 
 const TodoPage = () => {
 	const [error, setError] = useState<string | null>(null);
@@ -42,6 +43,22 @@ const TodoPage = () => {
 		}
 	}
 
+	const handleToggleTodo = async (todo: Todo) => {
+		try {
+			const data = await TodoAPI.updateTodo(todo.id, {
+				completed: !todo.completed,
+			});
+			setTodo(data);
+
+		} catch (err) {
+			if (err instanceof Error) {
+				setError("Could not toggle todo: " + err.message);
+			} else {
+				setError("It's not me, it's you.");
+			}
+		}
+	}
+
 	useEffect(() => {
 		// oxlint-disable-next-line react/set-state-in-effect
 		getTodo(todoId);
@@ -59,10 +76,16 @@ const TodoPage = () => {
 		<>
 			<h1>{todo.title}</h1>
 
-			<p><strong>Status:</strong> {todo.completed ? "Completed" : "Not completed"}</p>
+			<p><strong>Status:</strong>
+			{" "}
+			{todo.completed ? <span className="completed">👌🏻 Completed</span> : <span className="not-completed">🥵 Not completed</span>}</p>
 
 			<div className="buttons mb-3">
 				{/* Toggle */}
+				<Button
+					onClick={() => handleToggleTodo(todo)}
+					variant="success"
+				>Toggle</Button>
 
 				{/* Delete */}
 			</div>

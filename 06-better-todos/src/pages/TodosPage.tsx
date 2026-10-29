@@ -40,28 +40,6 @@ function TodosPage() {
 			}
 		}
 	}
-
-	const handleToggleTodo = async (todo: Todo) => {
-		try {
-			await updateTodo(todo.id, {
-				completed: !todo.completed,
-			});
-
-			setTodos(prevTodos =>
-				(prevTodos ?? []).map(t =>
-					t.id === todo.id
-						? { ...t, completed: !todo.completed }
-						: t
-			));
-
-		} catch (err) {
-			if (err instanceof Error) {
-				setError("Could not toggle todo: " + err.message);
-			} else {
-				setError("It's not me, it's you.");
-			}
-		}
-	}
 	*/
 
 	useEffect(() => {
