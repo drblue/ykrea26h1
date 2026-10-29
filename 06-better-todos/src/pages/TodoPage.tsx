@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import Loading from "../components/Loading";
 import * as TodoAPI from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
@@ -10,6 +10,7 @@ const TodoPage = () => {
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [todo, setTodo] = useState<Todo | null>(null);
+	const navigate = useNavigate();
 	const { id } = useParams();
 	const todoId = Number(id);
 
@@ -43,7 +44,29 @@ const TodoPage = () => {
 		}
 	}
 
+	const handleDeleteTodo = async (id: number) => {
+		// Reset state
+		setError(null);
+
+		try {
+			await TodoAPI.deleteTodo(id);
+
+			// 🚢 Navigate the user
+			navigate("/todos");
+
+		} catch (err) {
+			if (err instanceof Error) {
+				setError("Could not delete todo: " + err.message);
+			} else {
+				setError("It's not me, it's you.");
+			}
+		}
+	}
+
 	const handleToggleTodo = async (todo: Todo) => {
+		// Reset state
+		setError(null);
+
 		try {
 			const data = await TodoAPI.updateTodo(todo.id, {
 				completed: !todo.completed,
@@ -88,6 +111,10 @@ const TodoPage = () => {
 				>Toggle</Button>
 
 				{/* Delete */}
+				<Button
+					onClick={() => handleDeleteTodo(todo.id)}
+					variant="danger"
+				>Delete</Button>
 			</div>
 
 			{/* Back to all todos */}

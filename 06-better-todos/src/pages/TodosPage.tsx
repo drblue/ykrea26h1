@@ -26,22 +26,6 @@ function TodosPage() {
 		setIsLoading(false);
 	}
 
-	/*
-	const handleDeleteTodo = async (id: number) => {
-		try {
-			await deleteTodo(id);
-
-			setTodos(prevTodos => (prevTodos ?? []).filter(t => t.id !== id));
-		} catch (err) {
-			if (err instanceof Error) {
-				setError("Could not delete todo: " + err.message);
-			} else {
-				setError("It's not me, it's you.");
-			}
-		}
-	}
-	*/
-
 	useEffect(() => {
 		(async () => {
 			await getData();
