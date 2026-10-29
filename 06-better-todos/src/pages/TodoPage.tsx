@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import Loading from "../components/Loading";
 import * as TodoAPI from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
+import { toast } from "react-toastify";
 
 const TodoPage = () => {
 	const [error, setError] = useState<string | null>(null);
@@ -49,9 +50,13 @@ const TodoPage = () => {
 		setError(null);
 
 		try {
+			// 💣 Nuke it
 			await TodoAPI.deleteTodo(id);
 
-			// 🚢 Navigate the user
+			// 🥂 Celebrate it
+			toast.success("Omg that felt good");
+
+			// 🚢 Navigate it
 			navigate("/todos", {
 				replace: true,  // replace the current entry in the History stack with this URL
 			});
