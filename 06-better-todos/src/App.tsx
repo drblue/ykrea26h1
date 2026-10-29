@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import { Route, Routes } from "react-router";
 import Navigation from "./pages/partials/Navigation";
+import CreateTodoPage from "./pages/CreateTodoPage";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import TodosPage from "./pages/TodosPage";
@@ -17,6 +18,7 @@ function App() {
 					<Route path="/" element={<HomePage />} />
 					<Route path="/todos" element={<TodosPage />} />
 					<Route path="/todos/:id" element={<TodoPage />} />
+					<Route path="/todos/create" element={<CreateTodoPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</Container>

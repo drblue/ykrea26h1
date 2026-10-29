@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router";
-import AddTodoForm from "../components/AddTodoForm";
 import TodoCounter from "../components/TodoCounter";
-import { createTodo, getTodos } from "../services/TodoAPI";
+import { getTodos } from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
 
 function TodosPage() {
@@ -25,25 +24,6 @@ function TodosPage() {
 		}
 
 		setIsLoading(false);
-	}
-
-	const handleAddTodo = async (title: string) => {
-		try {
-			const createdTodo = await createTodo({
-				title,
-				completed: false,
-			});
-
-			setTodos(prevTodos => [...prevTodos ?? [], createdTodo]);
-		} catch (err) {
-			if (err instanceof Error) {
-				setError("Could not create todo: " + err.message);
-			} else {
-				setError("Ouch. Stop throwing things that aren't Errors at me.");
-			}
-			// Re-throw error
-			throw err;
-		}
 	}
 
 	/*
@@ -93,10 +73,6 @@ function TodosPage() {
 	return (
 		<>
 			<h1>Todos</h1>
-
-			<AddTodoForm
-				onAddTodo={handleAddTodo}
-			/>
 
 			{error && <Alert variant="danger">{error}</Alert>}
 
