@@ -17,7 +17,13 @@ function TodosPage() {
 
 		try {
 			const data = await getTodos();
-			setTodos(data);
+
+			// Sort dem todos
+			const sortedTodos = data
+				.sort((a, b) => a.title.localeCompare(b.title))
+				.sort((a, b) => Number(a.completed) - Number(b.completed));
+
+			setTodos(sortedTodos);
 		} catch {
 			// Something bad happened
 			setError("Something bad happened.");

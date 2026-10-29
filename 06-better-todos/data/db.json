@@ -18,7 +18,22 @@
     {
       "id": 4,
       "title": "Take over the world 😈",
-      "completed": false
+      "completed": true
+    },
+    {
+      "title": "Apes eats banananas",
+      "completed": false,
+      "id": 5
+    },
+    {
+      "title": "Eels are people too",
+      "completed": true,
+      "id": 6
+    },
+    {
+      "title": "Apples ain't no fruit, is computah",
+      "completed": false,
+      "id": 7
     }
   ]
 }
