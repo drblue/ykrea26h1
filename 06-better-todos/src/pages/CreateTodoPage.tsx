@@ -21,7 +21,7 @@ const CreateTodoPage = () => {
 			});
 
 			setCreatedTodo(data);
-			console.log("Created todo, yayy!!!", createdTodo);
+			console.log("Created todo, yayy!!!", createdTodo);  // createdTodo isn't updated yet since React batches updating of state
 
 		} catch (err) {
 			if (err instanceof Error) {
@@ -43,6 +43,16 @@ const CreateTodoPage = () => {
 			<AddTodoForm
 				onAddTodo={handleAddTodo}
 			/>
+
+			{createdTodo && (
+				<Alert variant="success">
+					<Alert.Heading>Great success! ✨</Alert.Heading>
+
+					<p>Todo was successfully created.</p>
+
+					<Link to={"/todos/" + createdTodo.id}>Onwards to the todo &raquo;</Link>
+				</Alert>
+			)}
 
 			{/* Back to all todos */}
 			<Link to="/todos" className="btn btn-secondary" role="button">
