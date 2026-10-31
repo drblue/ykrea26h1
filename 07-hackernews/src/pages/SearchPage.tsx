@@ -13,12 +13,19 @@ const SearchPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [inputSearch, setInputSearch] = useState("");
 	const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(null);
-	// const [query, setQuery] = useState("");
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	// get `query=` value from URL
 	const searchParamsQuery = searchParams.get("query"); // /search?query=tesla
 	console.log("searchParamsQuery:", searchParamsQuery);
+
+	// get `page=` value from URL
+	const searchParamsPage = Number(searchParams.get("page") ?? 1);  // page=2
+	const page = Number.isInteger(searchParamsPage) && searchParamsPage >= 1
+		? searchParamsPage
+		: 1;
+
+	console.log("page:", page);
 
 	const searchHackerNews = async (searchQuery: string, searchPage: number) => {
 		// reset state + set loading
@@ -28,7 +35,7 @@ const SearchPage = () => {
 
 		try {
 			// call api and search for keyword
-			const data = await searchByDate(searchQuery, searchPage);
+			const data = await searchByDate(searchQuery, searchPage - 1);
 
 			// update state with search result
 			setSearchResult(data);
@@ -56,7 +63,7 @@ const SearchPage = () => {
 		}
 
 		// search for haxx0rs 🕵
-		setSearchParams({ query: trimmedInputSearch });
+		setSearchParams({ query: trimmedInputSearch, page: String(1) });
 	}
 
 	useEffect(() => {
@@ -65,8 +72,8 @@ const SearchPage = () => {
 		}
 
 		// oxlint-disable-next-line react/set-state-in-effect
-		searchHackerNews(searchParamsQuery, 0);
-	}, [searchParamsQuery]);
+		searchHackerNews(searchParamsQuery, page);
+	}, [searchParamsQuery, page]);
 
 	return (
 		<>
@@ -118,18 +125,18 @@ const SearchPage = () => {
 					<div className="d-flex justify-content-between align-items-center">
 						<div className="prev">
 							<Button
-								disabled={searchResult.page === 0}
-								onClick={() => searchHackerNews(searchParamsQuery, searchResult.page - 1)}
+								disabled={page === 1}
+								onClick={() => setSearchParams({ query: searchParamsQuery, page: String(page - 1) })}
 								variant="primary"
 							>Previous Page</Button>
 						</div>
 
-						<div className="page">{searchResult.page + 1} / {searchResult.nbPages}</div>
+						<div className="page">{page} / {searchResult.nbPages}</div>
 
 						<div className="next">
 							<Button
-								disabled={searchResult.page + 1 === searchResult.nbPages}
-								onClick={() => searchHackerNews(searchParamsQuery, searchResult.page + 1)}
+								disabled={page === searchResult.nbPages}
+								onClick={() => setSearchParams({ query: searchParamsQuery, page: String(page + 1) })}
 								variant="primary"
 							>Next Page</Button>
 						</div>
