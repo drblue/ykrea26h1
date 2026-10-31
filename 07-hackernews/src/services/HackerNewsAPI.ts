@@ -1,4 +1,3 @@
-
 /**
  * Hacker News API service
  *
