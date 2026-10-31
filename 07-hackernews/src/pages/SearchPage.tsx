@@ -12,12 +12,16 @@ const SearchPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [inputSearch, setInputSearch] = useState("");
 	const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(null);
+	const [query, setQuery] = useState("");
 
 	const searchHackerNews = async (searchQuery: string) => {
 		// reset state + set loading
 		setError(null);
 		setIsLoading(true);
 		setSearchResult(null);
+
+		// save query
+		setQuery(searchQuery);
 
 		try {
 			// call api and search for keyword
@@ -85,7 +89,7 @@ const SearchPage = () => {
 
 			{searchResult && (
 				<div id="search-result">
-					<p>Showing {searchResult.nbHits} search results for <em>{inputSearch}</em>...</p>
+					<p>Showing {searchResult.nbHits} search results for <em>{query}</em>...</p>
 
 					<ListGroup className="mb-3">
 						{searchResult.hits.map((hit) => (
