@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
+import { useSearchParams } from "react-router";
 import Loading from "../components/Loading";
 import type { HN_SearchResponse } from "../services/HackerNewsAPI.types";
 import { searchByDate } from "../services/HackerNewsAPI";
@@ -12,16 +13,18 @@ const SearchPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [inputSearch, setInputSearch] = useState("");
 	const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(null);
-	const [query, setQuery] = useState("");
+	// const [query, setQuery] = useState("");
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	// get `query=` value from URL
+	const searchParamsQuery = searchParams.get("query"); // /search?query=tesla
+	console.log("searchParamsQuery:", searchParamsQuery);
 
 	const searchHackerNews = async (searchQuery: string, searchPage: number) => {
 		// reset state + set loading
 		setError(null);
 		setIsLoading(true);
 		setSearchResult(null);
-
-		// save query
-		setQuery(searchQuery);
 
 		try {
 			// call api and search for keyword
@@ -53,9 +56,17 @@ const SearchPage = () => {
 		}
 
 		// search for haxx0rs 🕵
-		console.log(`Would search for "${inputSearch}" in HN API`);
-		await searchHackerNews(trimmedInputSearch, 0);
+		setSearchParams({ query: trimmedInputSearch });
 	}
+
+	useEffect(() => {
+		if (!searchParamsQuery) {
+			return;
+		}
+
+		// oxlint-disable-next-line react/set-state-in-effect
+		searchHackerNews(searchParamsQuery, 0);
+	}, [searchParamsQuery]);
 
 	return (
 		<>
@@ -87,9 +98,9 @@ const SearchPage = () => {
 
 			{isLoading && <Loading />}
 
-			{searchResult && searchResult.hits.length > 0 && (
+			{searchParamsQuery && searchResult && searchResult.hits.length > 0 && (
 				<div id="search-result">
-					<p>Showing {searchResult.nbHits} search results for <em>{query}</em>...</p>
+					<p>Showing {searchResult.nbHits} search results for <em>{searchParamsQuery}</em>...</p>
 
 					<ListGroup className="mb-3">
 						{searchResult.hits.map((hit) => (
@@ -108,7 +119,7 @@ const SearchPage = () => {
 						<div className="prev">
 							<Button
 								disabled={searchResult.page === 0}
-								onClick={() => searchHackerNews(query, searchResult.page - 1)}
+								onClick={() => searchHackerNews(searchParamsQuery, searchResult.page - 1)}
 								variant="primary"
 							>Previous Page</Button>
 						</div>
@@ -118,7 +129,7 @@ const SearchPage = () => {
 						<div className="next">
 							<Button
 								disabled={searchResult.page + 1 === searchResult.nbPages}
-								onClick={() => searchHackerNews(query, searchResult.page + 1)}
+								onClick={() => searchHackerNews(searchParamsQuery, searchResult.page + 1)}
 								variant="primary"
 							>Next Page</Button>
 						</div>
@@ -126,10 +137,10 @@ const SearchPage = () => {
 				</div>
 			)}
 
-			{searchResult && searchResult.hits.length === 0 && (
+			{searchParamsQuery && searchResult && searchResult.hits.length === 0 && (
 				<div id="search-result">
 					<Alert variant="info">
-						Sorry, no search results for <em>{query}</em>...
+						Sorry, no search results for <em>{searchParamsQuery}</em>...
 					</Alert>
 				</div>
 			)}
