@@ -87,7 +87,7 @@ const SearchPage = () => {
 
 			{isLoading && <Loading />}
 
-			{searchResult && (
+			{searchResult && searchResult.hits.length > 0 && (
 				<div id="search-result">
 					<p>Showing {searchResult.nbHits} search results for <em>{query}</em>...</p>
 
@@ -115,6 +115,14 @@ const SearchPage = () => {
 							<Button variant="primary">Next Page</Button>
 						</div>
 					</div>
+				</div>
+			)}
+
+			{searchResult && searchResult.hits.length === 0 && (
+				<div id="search-result">
+					<Alert variant="info">
+						Sorry, no search results for <em>{query}</em>...
+					</Alert>
 				</div>
 			)}
 		</>
