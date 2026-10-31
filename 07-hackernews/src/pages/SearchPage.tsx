@@ -14,7 +14,7 @@ const SearchPage = () => {
 	const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(null);
 	const [query, setQuery] = useState("");
 
-	const searchHackerNews = async (searchQuery: string) => {
+	const searchHackerNews = async (searchQuery: string, searchPage: number) => {
 		// reset state + set loading
 		setError(null);
 		setIsLoading(true);
@@ -25,7 +25,7 @@ const SearchPage = () => {
 
 		try {
 			// call api and search for keyword
-			const data = await searchByDate(searchQuery);
+			const data = await searchByDate(searchQuery, searchPage);
 
 			// update state with search result
 			setSearchResult(data);
@@ -54,7 +54,7 @@ const SearchPage = () => {
 
 		// search for haxx0rs 🕵
 		console.log(`Would search for "${inputSearch}" in HN API`);
-		await searchHackerNews(trimmedInputSearch);
+		await searchHackerNews(trimmedInputSearch, 0);
 	}
 
 	return (
@@ -106,13 +106,21 @@ const SearchPage = () => {
 
 					<div className="d-flex justify-content-between align-items-center">
 						<div className="prev">
-							<Button variant="primary">Previous Page</Button>
+							<Button
+								disabled={searchResult.page === 0}
+								onClick={() => searchHackerNews(query, searchResult.page - 1)}
+								variant="primary"
+							>Previous Page</Button>
 						</div>
 
-						<div className="page">PAGE</div>
+						<div className="page">{searchResult.page + 1} / {searchResult.nbPages}</div>
 
 						<div className="next">
-							<Button variant="primary">Next Page</Button>
+							<Button
+								disabled={searchResult.page + 1 === searchResult.nbPages}
+								onClick={() => searchHackerNews(query, searchResult.page + 1)}
+								variant="primary"
+							>Next Page</Button>
 						</div>
 					</div>
 				</div>
