@@ -57,6 +57,13 @@ const SearchPage = () => {
 		}
 	}
 
+	const handleReset = () => {
+		setError(null);
+		setInputSearch("");
+		setSearchResult(null);
+		setSearchParams({ hitsPerPage: String(hitsPerPage) });
+	}
+
 	const handleSubmit = async (e: React.SubmitEvent) => {
 		e.preventDefault();
 
@@ -86,7 +93,7 @@ const SearchPage = () => {
 		<>
 			<h1>🔎🔦👀</h1>
 
-			<Form className="mb-4" onSubmit={handleSubmit}>
+			<Form className="mb-4" onReset={handleReset} onSubmit={handleSubmit}>
 				<Form.Group className="mb-2" controlId="searchQuery">
 					<Form.Label>Search Query</Form.Label>
 					<Form.Control
@@ -98,7 +105,13 @@ const SearchPage = () => {
 					/>
 				</Form.Group>
 
-				<div className="d-flex justify-content-end">
+				<div className="d-flex justify-content-end gap-2">
+					<Button
+						type="reset"
+						variant="secondary"
+					>
+						Clear
+					</Button>
 					<Button
 						type="submit"
 						variant="success"
