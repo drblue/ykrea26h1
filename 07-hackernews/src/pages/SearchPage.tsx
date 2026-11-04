@@ -111,7 +111,9 @@ const SearchPage = () => {
 					<Form.Label>Results per page</Form.Label>
 					<Form.Select
 						onChange={e => setSearchParams(prevParams => {
-							return { ...prevParams, hitsPerPage: e.target.value, page: 1 }
+							const nextParams = new URLSearchParams(prevParams);
+							nextParams.set("hitsPerPage", e.target.value);
+							return nextParams;
 						})}
 						value={String(hitsPerPage)}
 					>
