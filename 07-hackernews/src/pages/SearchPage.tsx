@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router";
 import Loading from "../components/Loading";
 import type { HN_SearchResponse } from "../services/HackerNewsAPI.types";
 import { searchByDate } from "../services/HackerNewsAPI";
+import Pagination from "../components/Pagination";
 
 const SearchPage = () => {
 	const [error, setError] = useState<string | null>(null);
@@ -129,6 +130,20 @@ const SearchPage = () => {
 				<div id="search-result">
 					<p>Showing {searchResult.nbHits} search results for <em>{searchParamsQuery}</em>...</p>
 
+					<Pagination
+						className="mb-3"
+						page={page}
+						totalPages={searchResult.nbPages}
+						hasPreviousPage={page > 1}
+						hasNextPage={page < searchResult.nbPages}
+						onPreviousPage={() =>
+							setSearchParams({ query: searchParamsQuery, page: String(page - 1), hitsPerPage: String(hitsPerPage)})
+						}
+						onNextPage={() =>
+							setSearchParams({ query: searchParamsQuery, page: String(page + 1), hitsPerPage: String(hitsPerPage) })
+						}
+					/>
+
 					<ListGroup className="mb-3">
 						{searchResult.hits.map((hit) => (
 							<ListGroup.Item action={Boolean(hit.url)} href={hit.url} key={hit.objectID}>
@@ -142,6 +157,20 @@ const SearchPage = () => {
 						))}
 					</ListGroup>
 
+					<Pagination
+						page={page}
+						totalPages={searchResult.nbPages}
+						hasPreviousPage={page > 1}
+						hasNextPage={page < searchResult.nbPages}
+						onPreviousPage={() =>
+							setSearchParams({ query: searchParamsQuery, page: String(page - 1), hitsPerPage: String(hitsPerPage)})
+						}
+						onNextPage={() =>
+							setSearchParams({ query: searchParamsQuery, page: String(page + 1), hitsPerPage: String(hitsPerPage) })
+						}
+					/>
+
+					{/*
 					<div className="d-flex justify-content-between align-items-center">
 						<div className="prev">
 							<Button
@@ -161,6 +190,7 @@ const SearchPage = () => {
 							>Next Page</Button>
 						</div>
 					</div>
+					*/}
 				</div>
 			)}
 
