@@ -25,9 +25,15 @@ const SearchPage = () => {
 		? searchParamsPage
 		: 1;
 
-	console.log("page:", page);
+	// get `hitsPerPage=` value from URL
+	const searchParamsHitsPerPage = Number(searchParams.get("hitsPerPage") ?? 20);
+	const hitsPerPage = [10, 20, 50].includes(searchParamsHitsPerPage)
+		? searchParamsHitsPerPage
+		: 20;
 
-	const searchHackerNews = async (searchQuery: string, searchPage: number) => {
+	console.log("hitsPerPage:", hitsPerPage);
+
+	const searchHackerNews = async (searchQuery: string, searchPage: number, hitsPerPage: number) => {
 		// reset state + set loading
 		setError(null);
 		setIsLoading(true);
@@ -35,7 +41,7 @@ const SearchPage = () => {
 
 		try {
 			// call api and search for keyword
-			const data = await searchByDate(searchQuery, searchPage - 1);
+			const data = await searchByDate(searchQuery, searchPage - 1, hitsPerPage);
 
 			// update state with search result
 			setSearchResult(data);
@@ -63,7 +69,7 @@ const SearchPage = () => {
 		}
 
 		// search for haxx0rs 🕵
-		setSearchParams({ query: trimmedInputSearch, page: String(1) });
+		setSearchParams({ query: trimmedInputSearch, page: String(1), hitsPerPage: String(hitsPerPage) });
 	}
 
 	useEffect(() => {
@@ -72,15 +78,15 @@ const SearchPage = () => {
 		}
 
 		// oxlint-disable-next-line react/set-state-in-effect
-		searchHackerNews(searchParamsQuery, page);
-	}, [searchParamsQuery, page]);
+		searchHackerNews(searchParamsQuery, page, hitsPerPage);
+	}, [searchParamsQuery, page, hitsPerPage]);
 
 	return (
 		<>
 			<h1>🔎🔦👀</h1>
 
 			<Form className="mb-4" onSubmit={handleSubmit}>
-				<Form.Group className="mb-3" controlId="searchQuery">
+				<Form.Group className="mb-2" controlId="searchQuery">
 					<Form.Label>Search Query</Form.Label>
 					<Form.Control
 						onChange={e => setInputSearch(e.target.value)}
@@ -99,6 +105,20 @@ const SearchPage = () => {
 						Search
 					</Button>
 				</div>
+
+				<Form.Group className="mb-4" controlId="hitsPerPage">
+					<Form.Label>Results per page</Form.Label>
+					<Form.Select
+						onChange={e => setSearchParams(prevParams => {
+							return { ...prevParams, hitsPerPage: e.target.value, page: 1 }
+						})}
+						value={String(hitsPerPage)}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</Form.Select>
+				</Form.Group>
 			</Form>
 
 			{error && <Alert variant="warning">{error}</Alert>}
