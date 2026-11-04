@@ -89,6 +89,11 @@ const SearchPage = () => {
 		searchHackerNews(searchParamsQuery, page, hitsPerPage);
 	}, [searchParamsQuery, page, hitsPerPage]);
 
+	useEffect(() => {
+		// oxlint-disable-next-line react/set-state-in-effect
+		setInputSearch(searchParamsQuery ?? "")
+	}, [searchParamsQuery]);
+
 	return (
 		<>
 			<h1>🔎🔦👀</h1>
