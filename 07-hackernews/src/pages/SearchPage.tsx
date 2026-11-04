@@ -8,7 +8,6 @@ import Loading from "../components/Loading";
 import type { HN_SearchResponse } from "../services/HackerNewsAPI.types";
 import { searchByDate } from "../services/HackerNewsAPI";
 import Pagination from "../components/Pagination";
-import ErrorAlert from "../components/ErrorAlert";
 
 const SearchPage = () => {
 	const [error, setError] = useState<string | null>(null);
