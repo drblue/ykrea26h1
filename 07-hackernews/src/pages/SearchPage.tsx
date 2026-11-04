@@ -8,6 +8,7 @@ import Loading from "../components/Loading";
 import type { HN_SearchResponse } from "../services/HackerNewsAPI.types";
 import { searchByDate } from "../services/HackerNewsAPI";
 import Pagination from "../components/Pagination";
+import ErrorAlert from "../components/ErrorAlert";
 
 const SearchPage = () => {
 	const [error, setError] = useState<string | null>(null);
@@ -97,6 +98,15 @@ const SearchPage = () => {
 	return (
 		<>
 			<h1>🔎🔦👀</h1>
+
+			{/*
+			<ErrorAlert>This is my error</ErrorAlert>
+
+			<ErrorAlert>
+				<img src="https://media.tenor.com/U5hmONvZGo8AAAAM/mmt-error-error.gif" className="img-fluid" />
+				<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, iure!</p>
+			</ErrorAlert>
+			*/}
 
 			<Form className="mb-4" onReset={handleReset} onSubmit={handleSubmit}>
 				<Form.Group className="mb-2" controlId="searchQuery">
