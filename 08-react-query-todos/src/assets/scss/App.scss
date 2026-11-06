@@ -1,0 +1,47 @@
+@import "bootstrap/scss/bootstrap";
+@import "toastify";
+
+hr {
+	margin: 2rem 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin-bottom: 0.5em;
+}
+
+.todolist {
+	.list-group-item {
+		display: flex;
+		justify-content: space-between;
+
+		&.completed {
+			.todo-title {
+				color: $success;
+				font-style: italic;
+				text-decoration: line-through;
+			}
+		}
+	}
+}
+
+.loading-image {
+	width: 9rem;
+	height: 9rem;
+	flex-shrink: 0;
+}
+
+.buttons > * {
+	margin-right: 0.5rem;
+
+	&:last-child {
+		margin-right: 0;
+	}
+}
+
+.completed {
+	color: $success;
+}
+
+.not-completed {
+	color: $warning;
+}
