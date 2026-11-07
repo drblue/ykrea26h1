@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Container from "react-bootstrap/Container";
 import { Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -35,6 +36,8 @@ function App() {
 				// stacked={true}
 				theme="colored"
 			/>
+
+			<ReactQueryDevtools initialIsOpen={false} />
 		</>
 	);
 }
