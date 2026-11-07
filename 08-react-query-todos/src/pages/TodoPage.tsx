@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { Link, useNavigate, useParams } from "react-router";
@@ -6,48 +6,22 @@ import Loading from "../components/Loading";
 import * as TodoAPI from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import ErrorAlert from "../components/alerts/ErrorAlert";
 
 const TodoPage = () => {
-	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [todo, setTodo] = useState<Todo | null>(null);
+	const [mutationError, setMutationError] = useState<string | null>(null);
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const todoId = Number(id);
-
-	// Get todo from API
-	const getTodo = async (id: number) => {
-		// Check if todoId actually is a number
-		if (isNaN(id)) {
-			setError("Todo ID is not a number");
-			return;
-		}
-
-		// Reset state
-		setError(null);
-		setIsLoading(true);
-		setTodo(null);
-
-		// Make request to API (or try to...)
-		try {
-			const data = await TodoAPI.getTodo(id);
-			setTodo(data);
-
-		} catch (err) {
-			if (err instanceof Error) {
-				setError(err.message);
-			} else {
-				setError("It's not me, it's you");
-			}
-
-		} finally {
-			setIsLoading(false);
-		}
-	}
+	const { data: todo, error, isError, isLoading } = useQuery({
+		queryKey: ["todos", { id: todoId }],
+		queryFn: () => TodoAPI.getTodo(todoId),
+	});
 
 	const handleDeleteTodo = async (id: number) => {
 		// Reset state
-		setError(null);
+		setMutationError(null);
 
 		try {
 			// 💣 Nuke it
@@ -63,39 +37,35 @@ const TodoPage = () => {
 
 		} catch (err) {
 			if (err instanceof Error) {
-				setError("Could not delete todo: " + err.message);
+				setMutationError("Could not delete todo: " + err.message);
 			} else {
-				setError("It's not me, it's you.");
+				setMutationError("It's not me, it's you.");
 			}
 		}
 	}
 
 	const handleToggleTodo = async (todo: Todo) => {
 		// Reset state
-		setError(null);
+		setMutationError(null);
 
 		try {
-			const data = await TodoAPI.updateTodo(todo.id, {
+			await TodoAPI.updateTodo(todo.id, {
 				completed: !todo.completed,
 			});
-			setTodo(data);
+			// TODO: Fix me
+			// setTodo(data);
 
 		} catch (err) {
 			if (err instanceof Error) {
-				setError("Could not toggle todo: " + err.message);
+				setMutationError("Could not toggle todo: " + err.message);
 			} else {
-				setError("It's not me, it's you.");
+				setMutationError("It's not me, it's you.");
 			}
 		}
 	}
 
-	useEffect(() => {
-		// oxlint-disable-next-line react/set-state-in-effect
-		getTodo(todoId);
-	}, [todoId]);
-
-	if (error) {
-		return <Alert variant="warning">{error}</Alert>
+	if (isError) {
+		return <Alert variant="warning">{error.message}</Alert>
 	}
 
 	if (isLoading) {
@@ -105,6 +75,8 @@ const TodoPage = () => {
 	return todo && (
 		<>
 			<h1>{todo.title}</h1>
+
+			{mutationError && <ErrorAlert>{mutationError}</ErrorAlert>}
 
 			<p><strong>Status:</strong>
 			{" "}
