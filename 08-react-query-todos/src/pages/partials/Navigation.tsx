@@ -1,9 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
+import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { Link, NavLink } from "react-router";
+import { getTodos } from "../../services/TodoAPI";
 
 const Navigation = () => {
+	const { data: todos } = useQuery({
+		queryKey: ["todos"],
+		queryFn: getTodos
+	});
+
 	return (
 		<Navbar expand="sm">
 			<Container>
@@ -12,7 +20,13 @@ const Navigation = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
-						<Nav.Link as={NavLink} to="/todos" end>Todos</Nav.Link>
+						<Nav.Link as={NavLink} to="/todos" end>
+							Todos
+							{" "}
+							<Badge pill bg="danger">
+								{todos ? todos.length : "-"}
+							</Badge>
+						</Nav.Link>
 						<Nav.Link as={NavLink} to="/todos/create">Create</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
