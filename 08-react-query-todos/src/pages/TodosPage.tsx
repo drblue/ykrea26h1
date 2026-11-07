@@ -1,15 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router";
 import TodoCounter from "../components/TodoCounter";
-import { getTodos } from "../services/TodoAPI";
+import useTodos from "../hooks/useTodos";
 
 function TodosPage() {
-	const { data: todos, error, isError, isLoading } = useQuery({
-		queryKey: ["todos"],
-		queryFn: getTodos,
-	});
+	const { data: todos, error, isError, isLoading } = useTodos();
 
 	return (
 		<>

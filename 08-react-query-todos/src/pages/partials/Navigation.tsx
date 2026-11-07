@@ -1,16 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { Link, NavLink } from "react-router";
-import { getTodos } from "../../services/TodoAPI";
+import useTodos from "../../hooks/useTodos";
 
 const Navigation = () => {
-	const { data: todos } = useQuery({
-		queryKey: ["todos"],
-		queryFn: getTodos
-	});
+	const { data: todos } = useTodos();
 
 	return (
 		<Navbar expand="sm">
