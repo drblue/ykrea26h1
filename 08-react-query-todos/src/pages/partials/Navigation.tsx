@@ -7,7 +7,7 @@ const Navigation = () => {
 	return (
 		<Navbar expand="sm">
 			<Container>
-				<Navbar.Brand as={Link} to="/">📝 Better Todos</Navbar.Brand>
+				<Navbar.Brand as={Link} to="/">📝 React Query Todos</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
