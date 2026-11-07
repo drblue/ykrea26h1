@@ -2,22 +2,19 @@ import { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { Link, useNavigate, useParams } from "react-router";
+import { toast } from "react-toastify";
+import ErrorAlert from "../components/alerts/ErrorAlert";
 import Loading from "../components/Loading";
+import useTodo from "../hooks/useTodo";
 import * as TodoAPI from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
-import { toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
-import ErrorAlert from "../components/alerts/ErrorAlert";
 
 const TodoPage = () => {
 	const [mutationError, setMutationError] = useState<string | null>(null);
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const todoId = Number(id);
-	const { data: todo, error, isError, isLoading } = useQuery({
-		queryKey: ["todos", { id: todoId }],
-		queryFn: () => TodoAPI.getTodo(todoId),
-	});
+	const { data: todo, error, isError, isLoading } = useTodo(todoId);
 
 	const handleDeleteTodo = async (id: number) => {
 		// Reset state
