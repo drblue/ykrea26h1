@@ -1,48 +1,21 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router";
 import TodoCounter from "../components/TodoCounter";
 import { getTodos } from "../services/TodoAPI";
-import type { Todo } from "../types/Todo.types";
 
 function TodosPage() {
-	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [todos, setTodos] = useState<Todo[] | null>(null);
-
-	const getData = async () => {
-		// Set loading state
-		setIsLoading(true);
-
-		try {
-			const data = await getTodos();
-
-			// Sort dem todos
-			const sortedTodos = data
-				.sort((a, b) => a.title.localeCompare(b.title))
-				.sort((a, b) => Number(a.completed) - Number(b.completed));
-
-			setTodos(sortedTodos);
-		} catch {
-			// Something bad happened
-			setError("Something bad happened.");
-		}
-
-		setIsLoading(false);
-	}
-
-	useEffect(() => {
-		(async () => {
-			await getData();
-		})();
-	}, []);
+	const { data: todos, error, isError, isLoading } = useQuery({
+		queryKey: ["todos"],
+		queryFn: getTodos,
+	});
 
 	return (
 		<>
 			<h1>Todos</h1>
 
-			{error && <Alert variant="danger">{error}</Alert>}
+			{isError && <Alert variant="danger">{error.message}</Alert>}
 
 			{isLoading && <p>Loading todos...</p>}
 
