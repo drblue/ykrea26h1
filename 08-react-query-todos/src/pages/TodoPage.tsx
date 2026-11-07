@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import ErrorAlert from "../components/alerts/ErrorAlert";
 import Loading from "../components/Loading";
 import useTodo from "../hooks/useTodo";
+import useTodos from "../hooks/useTodos";
 import * as TodoAPI from "../services/TodoAPI";
 import type { Todo } from "../types/Todo.types";
 
@@ -14,7 +15,14 @@ const TodoPage = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const todoId = Number(id);
-	const { data: todo, error, isError, isLoading } = useTodo(todoId);
+	const {
+		data: todo,
+		error,
+		isError,
+		isLoading,
+		refetch: refetchTodo,
+	} = useTodo(todoId);
+	const { refetch: refetchTodos } = useTodos();
 
 	const handleDeleteTodo = async (id: number) => {
 		// Reset state
@@ -26,6 +34,9 @@ const TodoPage = () => {
 
 			// 🥂 Celebrate it
 			toast.success("Omg that felt good");
+
+			// Refetch todos
+			await refetchTodos();
 
 			// 🚢 Navigate it
 			navigate("/todos", {
@@ -49,8 +60,11 @@ const TodoPage = () => {
 			await TodoAPI.updateTodo(todo.id, {
 				completed: !todo.completed,
 			});
-			// TODO: Fix me
-			// setTodo(data);
+
+			// Refetch the todo
+			// await refetchTodo();
+			// await refetchTodos();
+			await Promise.all([refetchTodo(), refetchTodos()]);
 
 		} catch (err) {
 			if (err instanceof Error) {
