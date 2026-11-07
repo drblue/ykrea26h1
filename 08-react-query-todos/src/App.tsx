@@ -2,6 +2,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Container from "react-bootstrap/Container";
 import { Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
+import GlobalLoadingSpinner from "./components/spinners/GlobalLoadingSpinner";
 import Navigation from "./pages/partials/Navigation";
 import CreateTodoPage from "./pages/CreateTodoPage";
 import EditTodoPage from "./pages/EditTodoPage";
@@ -15,6 +16,7 @@ function App() {
 	return (
 		<>
 			<Navigation />
+			<GlobalLoadingSpinner />
 
 			<Container className="py-2">
 				<Routes>
