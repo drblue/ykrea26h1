@@ -5,6 +5,7 @@ const useCurrentWeather = (city: string) => {
 	return useQuery({
 		queryKey: ["current-weather", city],
 		queryFn: () => getCurrentWeather(city),
+		enabled: !!city,  // Boolean(city)
 	});
 }
 
