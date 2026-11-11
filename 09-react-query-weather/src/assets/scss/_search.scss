@@ -1,0 +1,29 @@
+#search-wrapper {
+	margin-bottom: 2.25rem;
+
+	.form-label {
+		font-size: 0.875rem;
+		color: var(--bs-secondary-color);
+	}
+
+	.input-group {
+		gap: 0.5rem;
+		flex-wrap: nowrap;
+	}
+
+	.form-control,
+	.btn {
+		border-radius: 0.25rem;
+		font-size: 1rem;
+		padding: 0.875rem 1rem;
+	}
+
+	.form-control {
+		min-width: 0;
+	}
+
+	.btn {
+		margin-left: 0;
+		padding-inline: clamp(1rem, 4vw, 3rem);
+	}
+}

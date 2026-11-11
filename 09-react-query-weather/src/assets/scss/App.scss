@@ -1,0 +1,11 @@
+/* Bootstrap */
+$primary: #e4a16b;
+@import "bootstrap/scss/bootstrap";
+
+/* Generic styles */
+@import "generic";
+@import "typography";
+
+/* Components */
+@import "current-weather";
+@import "search";
