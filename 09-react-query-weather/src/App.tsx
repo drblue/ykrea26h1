@@ -10,9 +10,14 @@ import "./assets/scss/App.scss";
 
 function App() {
 	const [selectedCity, setSelectedCity] = useState("");
-	const { data, error, isError, isLoading } = useCurrentWeather(selectedCity);
+	const { data, error, isError, isLoading, refetch } = useCurrentWeather(selectedCity);
 
 	const handleSearch = (location: string) => {
+		if (location === selectedCity) {
+			refetch();
+			return;
+		}
+
 		// Set selected city
 		setSelectedCity(location);
 	}
