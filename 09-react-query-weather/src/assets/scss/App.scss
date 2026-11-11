@@ -9,3 +9,9 @@ $primary: #e4a16b;
 /* Components */
 @import "current-weather";
 @import "search";
+
+.spinner-border {
+	position: fixed;
+	top: 1rem;
+	right: 1.25rem;
+}

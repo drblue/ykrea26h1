@@ -2,6 +2,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import CurrentWeather from "./components/CurrentWeather";
 import LoadingWeather from "./components/LoadingWeather";
 import SearchCity from "./components/SearchCity";
@@ -10,7 +11,7 @@ import "./assets/scss/App.scss";
 
 function App() {
 	const [selectedCity, setSelectedCity] = useState("");
-	const { data, error, isError, isLoading, refetch } = useCurrentWeather(selectedCity);
+	const { data, error, isError, isFetching, isLoading, refetch } = useCurrentWeather(selectedCity);
 
 	const handleSearch = (location: string) => {
 		if (location === selectedCity) {
@@ -33,9 +34,15 @@ function App() {
 
 				{isError && <Alert variant="danger">{error.message}</Alert>}
 
+				{isFetching && !isLoading && (
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				)}
+
 				{isLoading && <LoadingWeather />}
 
-				{!isLoading && !data && (
+				{!selectedCity && (
 					<div className="weather-status">
 						<p>Search for a city to see the current weather.</p>
 					</div>
