@@ -35,6 +35,15 @@ const SearchPage = () => {
 	const { data: searchResult, error, isError, isLoading } =
 		useHackerNewsSearch(query, page, hitsPerPage, sort);
 
+	const handlePageChange = (page: number) => {
+		setSearchParams({
+			query,
+			page: String(page),
+			hitsPerPage: String(hitsPerPage),
+			sort,
+		});
+	}
+
 	const handleReset = () => {
 		setInputSearch("");
 		setSearchParams({ hitsPerPage: String(hitsPerPage), sort });
@@ -142,12 +151,8 @@ const SearchPage = () => {
 						totalPages={searchResult.nbPages}
 						hasPreviousPage={page > 1}
 						hasNextPage={page < searchResult.nbPages}
-						onPreviousPage={() =>
-							setSearchParams({ query: query, page: String(page - 1), hitsPerPage: String(hitsPerPage), sort })
-						}
-						onNextPage={() =>
-							setSearchParams({ query: query, page: String(page + 1), hitsPerPage: String(hitsPerPage), sort })
-						}
+						onPreviousPage={() => handlePageChange(page - 1)}
+						onNextPage={() => handlePageChange(page + 1)}
 					/>
 
 					<ListGroup className="mb-3">
@@ -168,35 +173,9 @@ const SearchPage = () => {
 						totalPages={searchResult.nbPages}
 						hasPreviousPage={page > 1}
 						hasNextPage={page < searchResult.nbPages}
-						onPreviousPage={() =>
-							setSearchParams({ query: query, page: String(page - 1), hitsPerPage: String(hitsPerPage), sort })
-						}
-						onNextPage={() =>
-							setSearchParams({ query: query, page: String(page + 1), hitsPerPage: String(hitsPerPage), sort })
-						}
+						onPreviousPage={() => handlePageChange(page - 1)}
+						onNextPage={() => handlePageChange(page + 1)}
 					/>
-
-					{/*
-					<div className="d-flex justify-content-between align-items-center">
-						<div className="prev">
-							<Button
-								disabled={page === 1}
-								onClick={() => setSearchParams({ query: searchParamsQuery, page: String(page - 1) })}
-								variant="primary"
-							>Previous Page</Button>
-						</div>
-
-						<div className="page">{page} / {searchResult.nbPages}</div>
-
-						<div className="next">
-							<Button
-								disabled={page === searchResult.nbPages}
-								onClick={() => setSearchParams({ query: searchParamsQuery, page: String(page + 1) })}
-								variant="primary"
-							>Next Page</Button>
-						</div>
-					</div>
-					*/}
 				</div>
 			)}
 
