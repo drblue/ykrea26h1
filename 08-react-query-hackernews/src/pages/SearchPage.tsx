@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
+import Row from "react-bootstrap/Row";
 import { useSearchParams } from "react-router";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
@@ -27,12 +29,15 @@ const SearchPage = () => {
 		? searchParamsHitsPerPage
 		: 20;
 
+	// get `sort` value from URL
+	const sort = searchParams.get("sort") === "relevance" ? "relevance" : "latest";
+
 	const { data: searchResult, error, isError, isLoading } =
-		useHackerNewsSearch(query, page, hitsPerPage);
+		useHackerNewsSearch(query, page, hitsPerPage, sort);
 
 	const handleReset = () => {
 		setInputSearch("");
-		setSearchParams({ hitsPerPage: String(hitsPerPage) });
+		setSearchParams({ hitsPerPage: String(hitsPerPage), sort });
 	}
 
 	const handleSubmit = async (e: React.SubmitEvent) => {
@@ -48,7 +53,7 @@ const SearchPage = () => {
 		}
 
 		// search for haxx0rs 🕵
-		setSearchParams({ query: trimmedInputSearch, page: String(1), hitsPerPage: String(hitsPerPage) });
+		setSearchParams({ query: trimmedInputSearch, page: String(1), hitsPerPage: String(hitsPerPage), sort });
 	}
 
 	useEffect(() => {
@@ -61,7 +66,7 @@ const SearchPage = () => {
 			<h1>🔎🔦👀</h1>
 
 			<Form className="mb-4" onReset={handleReset} onSubmit={handleSubmit}>
-				<Form.Group className="mb-2" controlId="searchQuery">
+				<Form.Group className="mb-3" controlId="searchQuery">
 					<Form.Label>Search Query</Form.Label>
 					<Form.Control
 						onChange={e => setInputSearch(e.target.value)}
@@ -71,6 +76,41 @@ const SearchPage = () => {
 						required
 					/>
 				</Form.Group>
+
+				<Row className="mb-3">
+					<Form.Group as={Col} controlId="sort">
+						<Form.Label>Sort by</Form.Label>
+						<Form.Select
+							onChange={e => setSearchParams(prevParams => {
+								const nextParams = new URLSearchParams(prevParams);
+								nextParams.set("sort", e.target.value);
+								nextParams.set("page", "1");
+								return nextParams;
+							})}
+							value={sort}
+						>
+							<option value="latest">Latest</option>
+							<option value="relevance">Relevance</option>
+						</Form.Select>
+					</Form.Group>
+
+					<Form.Group as={Col} controlId="hitsPerPage">
+						<Form.Label>Results per page</Form.Label>
+						<Form.Select
+							onChange={e => setSearchParams(prevParams => {
+								const nextParams = new URLSearchParams(prevParams);
+								nextParams.set("hitsPerPage", e.target.value);
+								nextParams.set("page", "1");
+								return nextParams;
+							})}
+							value={String(hitsPerPage)}
+						>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="50">50</option>
+						</Form.Select>
+					</Form.Group>
+				</Row>
 
 				<div className="d-flex justify-content-end gap-2">
 					<Button
@@ -86,23 +126,6 @@ const SearchPage = () => {
 						Search
 					</Button>
 				</div>
-
-				<Form.Group className="mb-4" controlId="hitsPerPage">
-					<Form.Label>Results per page</Form.Label>
-					<Form.Select
-						onChange={e => setSearchParams(prevParams => {
-							const nextParams = new URLSearchParams(prevParams);
-							nextParams.set("hitsPerPage", e.target.value);
-							nextParams.set("page", "1");
-							return nextParams;
-						})}
-						value={String(hitsPerPage)}
-					>
-						<option value="10">10</option>
-						<option value="20">20</option>
-						<option value="50">50</option>
-					</Form.Select>
-				</Form.Group>
 			</Form>
 
 			{isError && <Alert variant="warning">{error.message}</Alert>}
@@ -120,10 +143,10 @@ const SearchPage = () => {
 						hasPreviousPage={page > 1}
 						hasNextPage={page < searchResult.nbPages}
 						onPreviousPage={() =>
-							setSearchParams({ query: query, page: String(page - 1), hitsPerPage: String(hitsPerPage)})
+							setSearchParams({ query: query, page: String(page - 1), hitsPerPage: String(hitsPerPage), sort })
 						}
 						onNextPage={() =>
-							setSearchParams({ query: query, page: String(page + 1), hitsPerPage: String(hitsPerPage) })
+							setSearchParams({ query: query, page: String(page + 1), hitsPerPage: String(hitsPerPage), sort })
 						}
 					/>
 
@@ -146,10 +169,10 @@ const SearchPage = () => {
 						hasPreviousPage={page > 1}
 						hasNextPage={page < searchResult.nbPages}
 						onPreviousPage={() =>
-							setSearchParams({ query: query, page: String(page - 1), hitsPerPage: String(hitsPerPage)})
+							setSearchParams({ query: query, page: String(page - 1), hitsPerPage: String(hitsPerPage), sort })
 						}
 						onNextPage={() =>
-							setSearchParams({ query: query, page: String(page + 1), hitsPerPage: String(hitsPerPage) })
+							setSearchParams({ query: query, page: String(page + 1), hitsPerPage: String(hitsPerPage), sort })
 						}
 					/>
 
