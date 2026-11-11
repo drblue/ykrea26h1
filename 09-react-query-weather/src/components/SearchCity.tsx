@@ -5,7 +5,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 
 interface SearchCityProps {
 	isLoading: boolean;
-	onSearch: (location: string) => Promise<void>;
+	onSearch: (location: string) => void;
 }
 
 function SearchCity({ isLoading, onSearch }: SearchCityProps) {
