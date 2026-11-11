@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
@@ -7,7 +6,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { useSearchParams } from "react-router";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
-import { searchByDate } from "../services/HackerNewsAPI";
+import useHackerNewsSearch from "../hooks/useHackerNewsSearch";
 
 const SearchPage = () => {
 	const [inputSearch, setInputSearch] = useState("");
@@ -28,11 +27,8 @@ const SearchPage = () => {
 		? searchParamsHitsPerPage
 		: 20;
 
-	const { data: searchResult, error, isError, isLoading } = useQuery({
-		queryKey: ["search-hn", { query, page, hitsPerPage }],
-		queryFn: () => searchByDate(query, page - 1, hitsPerPage),
-		enabled: !!query,
-	});
+	const { data: searchResult, error, isError, isLoading } =
+		useHackerNewsSearch(query, page, hitsPerPage);
 
 	const handleReset = () => {
 		setInputSearch("");
