@@ -3,7 +3,7 @@ import { getTodo } from "../services/TodoAPI";
 
 const useTodo = (todoId: number) => {
 	return useQuery({
-		queryKey: ["todos", { id: todoId }],
+		queryKey: ["todo", { id: todoId }],
 		queryFn: () => getTodo(todoId),
 	});
 }

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router";
 import TodoForm from "../components/TodoForm";
@@ -6,8 +6,14 @@ import { createTodo } from "../services/TodoAPI";
 import type { CreateTodoPayload } from "../types/Todo.types";
 
 const CreateTodoPage = () => {
+	const queryClient = useQueryClient();
+
 	const createTodoMutation = useMutation({
 		mutationFn: (data: CreateTodoPayload) => createTodo(data),
+		onSuccess: () => {
+			// invalidate any `["todos"]` queries that exists in the cache
+			queryClient.invalidateQueries({ queryKey: ["todos"] });
+		},
 	});
 
 	const handleAddTodo = (title: string) => {
