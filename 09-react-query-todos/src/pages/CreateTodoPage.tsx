@@ -10,9 +10,9 @@ const CreateTodoPage = () => {
 		mutationFn: (data: CreateTodoPayload) => createTodo(data),
 	});
 
-	const handleAddTodo = async (title: string) => {
+	const handleAddTodo = (title: string) => {
 		// Call mutation 🐢☢️
-		createTodoMutation.mutate({
+		return createTodoMutation.mutateAsync({
 			title,
 			completed: false,
 		});

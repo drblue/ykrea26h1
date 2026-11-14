@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import type { Todo } from "../types/Todo.types";
 
 interface TodoFormProps {
 	initialTitle?: string;
-	onSave: (title: string) => Promise<void>;
+	onSave: (title: string) => Promise<Todo>;
 }
 
 const TodoForm = ({ initialTitle = "", onSave }: TodoFormProps) => {
