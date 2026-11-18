@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { Link, useNavigate, useParams } from "react-router";
@@ -10,6 +11,7 @@ import * as TodoAPI from "../services/TodoAPI";
 import type { UpdateTodoPayload } from "../types/Todo.types";
 
 const TodoPage = () => {
+	const [queryEnabled, setQueryEnabled] = useState(true);
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const todoId = Number(id);
@@ -19,7 +21,34 @@ const TodoPage = () => {
 		error,
 		isError,
 		isLoading,
-	} = useTodo(todoId);
+	} = useTodo(todoId, queryEnabled);
+
+	const deleteTodoMutation = useMutation({
+		mutationFn: () => TodoAPI.deleteTodo(todoId),
+		onMutate: () => {
+			// disable query for this specific todo (to avoid it being fetched again)
+			setQueryEnabled(false);
+		},
+		onError: () => {
+			// re-enable query
+			setQueryEnabled(true);
+		},
+		onSuccess: async () => {
+			// 🥂 Celebrate it
+			toast.success("Omg that felt good");
+
+			// Invalidate the `todos` query
+			await queryClient.invalidateQueries({ queryKey: ["todos"] });
+
+			// Remove the cached query for this todo
+			queryClient.removeQueries({ queryKey: ["todo", { id: todoId }] });
+
+			// 🚢 Navigate it
+			navigate("/todos", {
+				replace: true,  // replace the current entry in the History stack with this URL
+			});
+		},
+	});
 
 	const updateTodoMutation = useMutation({
 		mutationFn: (data: UpdateTodoPayload) => TodoAPI.updateTodo(todoId, data),
@@ -42,38 +71,6 @@ const TodoPage = () => {
 		},
 	});
 
-	const handleDeleteTodo = async (id: number) => {
-		// TODO: Replace me with a mutation
-
-		/*
-		// Reset state
-		setMutationError(null);
-
-		try {
-			// 💣 Nuke it
-			await TodoAPI.deleteTodo(id);
-
-			// 🥂 Celebrate it
-			toast.success("Omg that felt good");
-
-			// Refetch todos
-			await refetchTodos();
-
-			// 🚢 Navigate it
-			navigate("/todos", {
-				replace: true,  // replace the current entry in the History stack with this URL
-			});
-
-		} catch (err) {
-			if (err instanceof Error) {
-				setMutationError("Could not delete todo: " + err.message);
-			} else {
-				setMutationError("It's not me, it's you.");
-			}
-		}
-		*/
-	}
-
 	if (isError) {
 		return <Alert variant="warning">{error.message}</Alert>
 	}
@@ -87,6 +84,7 @@ const TodoPage = () => {
 			<title>{todo.title}</title>
 			<h1>{todo.title}</h1>
 
+			{deleteTodoMutation.isError && <ErrorAlert>{deleteTodoMutation.error.message}</ErrorAlert>}
 			{updateTodoMutation.isError && <ErrorAlert>{updateTodoMutation.error.message}</ErrorAlert>}
 
 			<p><strong>Status:</strong>
@@ -109,7 +107,8 @@ const TodoPage = () => {
 
 				{/* Delete */}
 				<Button
-					onClick={() => handleDeleteTodo(todo.id)}
+					disabled={deleteTodoMutation.isPending}
+					onClick={() => deleteTodoMutation.mutate()}
 					variant="danger"
 				>Delete</Button>
 			</div>
