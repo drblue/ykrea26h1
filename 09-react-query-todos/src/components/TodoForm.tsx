@@ -24,7 +24,9 @@ const TodoForm = ({ initialTitle = "", onSave }: TodoFormProps) => {
 			await onSave(trimmedInputTitle);
 
 			// Clear input field and reset pending state
-			setInputTitle("");
+			if (!initialTitle) {
+				setInputTitle("");
+			}
 		} catch {
 			// Keep the input
 		} finally {

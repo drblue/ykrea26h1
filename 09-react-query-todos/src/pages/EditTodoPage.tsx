@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { useNavigate, useParams } from "react-router";
@@ -5,6 +6,8 @@ import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 import TodoForm from "../components/TodoForm";
 import useTodo from "../hooks/useTodo";
+import * as TodoAPI from "../services/TodoAPI";
+import type { UpdateTodoPayload } from "../types/Todo.types";
 
 const EditTodoPage = () => {
 	const navigate = useNavigate();
@@ -13,27 +16,23 @@ const EditTodoPage = () => {
 
 	const { data: todo, error, isError, isLoading } = useTodo(todoId);
 
-	const handleUpdateTodo = async (title: string) => {
-		/*
-		try {
-			// 📞 Call the API and update the todo
-			const data = await TodoAPI.updateTodo(todoId, { title });
-			console.log("Saved? 🏊🏻🛟", data);
-
+	const updateTodoMutation = useMutation({
+		mutationFn: (data: UpdateTodoPayload) => TodoAPI.updateTodo(todoId, data),
+		onSuccess: () => {
 			// 🥂 Toast the user
 			toast.success("Todo saved 🏊🏻🛟");
 
 			// 🚢 Redirect the user
 			navigate("/todos/" + todoId);
+		},
+		onError: (err) => {
+			// 💣 Throw bomb at user
+			toast.error("Error: " + err.message);
+		},
+	});
 
-		} catch (err) {
-			if (err instanceof Error) {
-				setError("Could not save todo: " + err.message);
-			} else {
-				setError("Ouch. Stop throwing things that aren't Errors at me.");
-			}
-		}
-		*/
+	const handleUpdateTodo = async (title: string) => {
+		return updateTodoMutation.mutateAsync({ title });
 	}
 
 	if (isError) {
@@ -48,6 +47,12 @@ const EditTodoPage = () => {
 		<>
 			<title>{`Edit: ${todo.title}`}</title>
 			<h1>Edit: {todo.title}</h1>
+
+			{updateTodoMutation.isError && (
+				<Alert variant="danger">
+					{updateTodoMutation.error.message ?? "Unknown error."}
+				</Alert>
+			)}
 
 			<TodoForm
 				initialTitle={todo.title}
