@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { useNavigate, useParams } from "react-router";
@@ -12,6 +12,7 @@ import type { UpdateTodoPayload } from "../types/Todo.types";
 const EditTodoPage = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
+	const queryClient = useQueryClient();
 	const todoId = Number(id);
 
 	const { data: todo, error, isError, isLoading } = useTodo(todoId);
@@ -24,6 +25,10 @@ const EditTodoPage = () => {
 
 			// 🚢 Redirect the user
 			navigate("/todos/" + todoId);
+
+			// Invalidate all related queries
+			queryClient.invalidateQueries({ queryKey: ["todos"] });
+			queryClient.invalidateQueries({ queryKey: ["todo", { id: todoId }] });
 		},
 		onError: (err) => {
 			// 💣 Throw bomb at user
