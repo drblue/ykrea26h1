@@ -19,16 +19,18 @@ const EditTodoPage = () => {
 
 	const updateTodoMutation = useMutation({
 		mutationFn: (data: UpdateTodoPayload) => TodoAPI.updateTodo(todoId, data),
-		onSuccess: () => {
+		onSuccess: async () => {
 			// 🥂 Toast the user
 			toast.success("Todo saved 🏊🏻🛟");
 
+			// Invalidate all related queries
+			await Promise.all([
+				queryClient.invalidateQueries({ queryKey: ["todos"] }),
+				queryClient.invalidateQueries({ queryKey: ["todo", { id: todoId }] }),
+			]);
+
 			// 🚢 Redirect the user
 			navigate("/todos/" + todoId);
-
-			// Invalidate all related queries
-			queryClient.invalidateQueries({ queryKey: ["todos"] });
-			queryClient.invalidateQueries({ queryKey: ["todo", { id: todoId }] });
 		},
 		onError: (err) => {
 			// 💣 Throw bomb at user
