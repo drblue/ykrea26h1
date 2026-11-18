@@ -4,6 +4,7 @@ import notFoundImage from "../assets/images/not-found-batman.svg";
 const NotFoundPage = () => {
 	return (
 		<main className="text-center py-4">
+			<title>404 — Page not found</title>
 			<img
 				src={notFoundImage}
 				alt="Batman looking lost beside a 404 sign."

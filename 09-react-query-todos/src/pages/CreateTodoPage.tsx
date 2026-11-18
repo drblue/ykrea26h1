@@ -26,6 +26,7 @@ const CreateTodoPage = () => {
 
 	return (
 		<>
+			<title>Create Todo</title>
 			<h1>Create a new Todo</h1>
 
 			{createTodoMutation.isError && (

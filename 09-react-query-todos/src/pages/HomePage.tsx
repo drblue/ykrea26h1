@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const HomePage = () => {
 	return (
 		<>
+			<title>React Query Todos</title>
 			<h1>Welcome to React Query Todos!</h1>
 
 			<p>Because when your life is on fire 🔥, <Link to="/some-page-that-does-not-exist">you need a todo list</Link>.</p>

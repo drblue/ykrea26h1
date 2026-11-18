@@ -85,6 +85,7 @@ const TodoPage = () => {
 
 	return todo && (
 		<>
+			<title>{todo.title}</title>
 			<h1>{todo.title}</h1>
 
 			{mutationError && <ErrorAlert>{mutationError}</ErrorAlert>}

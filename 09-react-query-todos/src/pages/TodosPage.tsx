@@ -9,6 +9,7 @@ function TodosPage() {
 
 	return (
 		<>
+			<title>Todos</title>
 			<h1>Todos</h1>
 
 			{isError && <Alert variant="danger">{error.message}</Alert>}

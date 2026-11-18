@@ -82,6 +82,7 @@ const EditTodoPage = () => {
 
 	return todo && (
 		<>
+			<title>{`Edit: ${todo.title}`}</title>
 			<h1>Edit: {todo.title}</h1>
 
 			<TodoForm
