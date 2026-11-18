@@ -51,7 +51,9 @@ const TodoForm = ({ initialTitle = "", onSave }: TodoFormProps) => {
 				disabled={trimmedInputTitle.length < 3 || isPending}
 				type="submit"
 				variant="success"
-			>Save 👶🏻</Button>
+			>
+				{isPending ? "Saving 🛟..." : "Save 👶🏻"}
+			</Button>
 
 			{trimmedInputTitle.length > 0 && trimmedInputTitle.length < 3 && (
 				<Form.Text className="text-danger text-small">That's too short todo to do, better do it right away!</Form.Text>
