@@ -2,24 +2,28 @@
 
 This is a copy of `09-react-query-todos` from `lesson-9`.
 
+## Resources
+
+* [Vitest](https://vitest.dev/)
+* [Testing Library](https://testing-library.com/)
+* [JSDOM](https://jsdom.org/)
+
 ## Install dependencies
 
 ```bash
-npm install
+npm install -D vitest jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom @testing-library/user-event
 ```
 
 ## Run
 
-Start **both** the React app and the json-server in separate terminals:
-
-### Terminal 1 (React app)
+Start the tests in watch mode:
 
 ```bash
-npm run dev
+npm run test
 ```
 
-### Terminal 2 (json-server)
+Run the tests once:
 
 ```bash
-npm run server
+npm run test:once
 ```
