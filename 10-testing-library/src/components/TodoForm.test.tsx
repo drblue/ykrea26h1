@@ -107,3 +107,27 @@ test("shows Saving and disables the button while saving", async () => {
 		expect(title).toHaveValue("");
 	});
 });
+
+test("keeps the updated title after saving an edit", async () => {
+	const user = userEvent.setup();
+	const onSave = vi.fn().mockResolvedValue({
+		id: 1,
+		title: "Learn Vitest",
+		completed: false,
+	});
+
+	render(<TodoForm initialTitle={TODO_TITLE} onSave={onSave} />);
+
+	const title = screen.getByRole("textbox", { name: /title/i });
+	const save = screen.getByRole("button", { name: /save/i });
+
+	await user.clear(title);
+	await user.type(title, "Learn Vitest");
+	await user.click(save);
+
+	expect(onSave).toHaveBeenCalledExactlyOnceWith("Learn Vitest");
+	await waitFor(() => {
+		expect(save).toBeEnabled();
+	});
+	expect(title).toHaveValue("Learn Vitest");
+});
