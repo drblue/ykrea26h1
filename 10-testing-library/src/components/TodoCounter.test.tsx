@@ -7,3 +7,15 @@ test("shows the count when there are no todos", () => {
 
 	expect(screen.getByText("0 of 0 todos completed.")).toBeVisible();
 });
+
+test("shows the count when there is one todo", () => {
+	render(<TodoCounter completed={1} total={1} />);
+
+	expect(screen.getByText("1 of 1 todo completed.")).toBeVisible();
+});
+
+test("shows the count when there are several todos", () => {
+	render(<TodoCounter completed={1} total={3} />);
+
+	expect(screen.getByText("1 of 3 todos completed.")).toBeVisible();
+});
