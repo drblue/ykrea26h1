@@ -12,12 +12,13 @@ afterEach(() => {
 	vi.restoreAllMocks();
 });
 
-test("shows an error and keeps the title when saving fails", async () => {
+test("lets the user retry after a failed save", async () => {
 	const user = userEvent.setup();
 	const queryClient = new QueryClient();
 
-	vi.spyOn(TodoAPI, "createTodo")
-		.mockRejectedValueOnce(new Error("Save failed"));
+	const mockedCreateTodo = vi.spyOn(TodoAPI, "createTodo")
+		.mockRejectedValueOnce(new Error("Save failed"))
+		.mockResolvedValueOnce({ id: 1, title: TODO_TITLE, completed: false });
 
 	render(
 		<QueryClientProvider client={queryClient}>
@@ -36,4 +37,11 @@ test("shows an error and keeps the title when saving fails", async () => {
 	expect(await screen.findByText("Save failed")).toBeVisible();
 	await waitFor(() => expect(save).toBeEnabled());
 	expect(title).toHaveValue(TODO_TITLE);
+
+	await user.click(save);
+
+	expect(await screen.findByText("Todo was successfully created.")).toBeVisible();
+	expect(screen.queryByText("Save failed")).not.toBeInTheDocument();
+	await waitFor(() => expect(title).toHaveValue(""));
+	expect(mockedCreateTodo).toHaveBeenCalledTimes(2);
 });
