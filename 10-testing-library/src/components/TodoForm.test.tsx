@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import TodoForm from "./TodoForm";
+import type { Todo } from "../types/Todo.types";
 
 const TODO_TITLE = "Learn React";
 
@@ -75,4 +76,34 @@ test("keeps the title when saving fails", async () => {
 		expect(save).toBeEnabled();
 	});
 	expect(title).toHaveValue(TODO_TITLE);
+});
+
+test("shows Saving and disables the button while saving", async () => {
+	const user = userEvent.setup();
+	let finishSaving!: (todo: Todo) => void;
+
+	const pendingSave = new Promise<Todo>(resolve => {
+		finishSaving = resolve;
+	});
+	const onSave = vi.fn().mockReturnValue(pendingSave);
+
+	// ARRANGE
+	render(<TodoForm onSave={onSave} />);
+
+	const title = screen.getByRole("textbox", { name: /title/i });
+	const save = screen.getByRole("button", { name: /save/i });
+
+	// ACT
+	await user.type(title, TODO_TITLE);
+	await user.click(save);
+
+	// ASSERT that button says "Saving" and is disabled
+	expect(screen.getByRole("button", { name: /saving/i })).toBeDisabled();
+
+	// Manually resolve the promise
+	finishSaving({ id: 1, title: TODO_TITLE, completed: false });
+
+	await waitFor(() => {
+		expect(title).toHaveValue("");
+	});
 });
