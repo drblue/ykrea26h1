@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import TodoForm from "./TodoForm";
 
+const TODO_TITLE = "Learn React";
+
 test("enables saving when the title becomes valid", async () => {
 	const user = userEvent.setup();
 	const onSave = vi.fn();
@@ -42,12 +44,35 @@ test("saves the trimmed title and clear the field when creating a todo", async (
 	const save = screen.getByRole("button", { name: /save/i });
 
 	// ACT
-	await user.type(title, "  Learn React  ");
+	await user.type(title, `  ${TODO_TITLE}  `);
 	await user.click(save);
 
-	expect(onSave).toHaveBeenCalledExactlyOnceWith("Learn React");
+	expect(onSave).toHaveBeenCalledExactlyOnceWith(TODO_TITLE);
 
 	await waitFor(() => {
 		expect(title).toHaveValue("");
 	});
+});
+
+test("keeps the title when saving fails", async () => {
+	const user = userEvent.setup();
+	const onSave = vi.fn().mockRejectedValue(new Error("Save failed"));
+
+	// ARRANGE
+	render(<TodoForm onSave={onSave} />);
+
+	const title = screen.getByRole("textbox", { name: /title/i });
+	const save = screen.getByRole("button", { name: /save/i });
+
+	// ACT
+	await user.type(title, TODO_TITLE);
+	await user.click(save);
+
+	// ASSERT
+	expect(onSave).toHaveBeenCalledExactlyOnceWith(TODO_TITLE);
+
+	await waitFor(() => {
+		expect(save).toBeEnabled();
+	});
+	expect(title).toHaveValue(TODO_TITLE);
 });
